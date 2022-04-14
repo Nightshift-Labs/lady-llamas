@@ -5,14 +5,14 @@ import useMintContract from "../hooks/useMintContract";
 
 const MintSection = () => {
   const { mintContract, web3 } = useMintContract();
-  const { account, active, activate } = useWeb3React();
+  const { account, active, chainId } = useWeb3React();
 
   useEffect(() => {
     const init = async () => {
       initContractValues();
     };
     init();
-  }, [mintContract]);
+  }, [mintContract, chainId]);
 
   useEffect(() => {
     const init = async () => {};
@@ -23,13 +23,15 @@ const MintSection = () => {
   //functions
   const initContractValues = async () => {
     try {
-      if (mintContract) {
+      if (mintContract && active) {
         console.log(mintContract);
       }
     } catch (e) {
       console.error(e);
     }
   };
+
+  const getPrice = () => {};
 
   // mint view
   return (

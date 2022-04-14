@@ -12,7 +12,7 @@ export default function useMintContract() {
     const { ethereum } = window;
 
     if (ethereum) {
-      console.log("Use connected provider...");
+      console.log("Using connected provider...");
 
       const web3 = new Web3(ethereum);
 
