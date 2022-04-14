@@ -7,14 +7,13 @@ const injected = new InjectedConnector({
 });
 
 const walletconnect = new WalletConnectConnector({
-  rpcUrl: `https://data-seed-prebsc-1-s1.binance.org:8545/`,
+  rpcUrl: process.env.PROVIDER_PRIMARY,
   bridge: "https://bridge.walletconnect.org",
   qrcode: true,
 });
 
 const walletlink = new WalletLinkConnector({
-  rpcUrl: `https://data-seed-prebsc-1-s1.binance.org:8545/`,
-  appName: "web3-react-demo",
+  rpcUrl: process.env.PROVIDER_SECONDARY,
 });
 
 const chainNames = {

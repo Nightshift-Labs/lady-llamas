@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 
-import WalletModal from "./wallet-modal";
 import { connectors } from "../utils/connectors";
+
+const WalletModal = dynamic(() => import("../components/wallet-modal"));
 
 const WalletConnector = () => {
   const { account, activate, deactivate, active } = useWeb3React();

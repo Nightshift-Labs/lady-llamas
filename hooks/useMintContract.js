@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
-import { ethers } from "ethers";
+import Web3 from "web3";
 
 import LadyLlamas from "../artifacts/contracts/LadyLlamas.json";
 
@@ -12,11 +12,11 @@ export default function useMintContract() {
     const { ethereum } = window;
 
     if (ethereum) {
-      console.log("Using metamask provider...");
+      console.log("Use connected provider...");
 
-      const web3 = new ethers.providers.Web3Provider(ethereum);
+      const web3 = new Web3(ethereum);
 
-      const mintContract = new ethers.Contract(
+      const mintContract = new web3.eth.Contract(
         LadyLlamas,
         process.env.MINT_CONTRACT_ADDRESS
       );
