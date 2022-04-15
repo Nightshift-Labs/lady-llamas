@@ -57,7 +57,7 @@ const Loader = () => {
   return (
     <svg
       role="status"
-      class="inline mr-2 w-12 h-12 text-gray-200 animate-spin dark:text-black fill-[#8FF5E2]"
+      className="inline mr-2 w-12 h-12 text-gray-200 animate-spin dark:text-black fill-[#8FF5E2]"
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
