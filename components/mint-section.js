@@ -47,7 +47,7 @@ const MintSection = () => {
   //functions
   const initContractValues = async () => {
     try {
-      if (mintContract && active) {
+      if (mintContract && active && account) {
         const minterMaximumCapacity = await mintContract.methods
           .minterMaximumCapacity()
           .call();
