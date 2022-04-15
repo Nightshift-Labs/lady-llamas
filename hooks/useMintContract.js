@@ -3,6 +3,7 @@ import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import Web3 from "web3";
 
 import LadyLlamas from "../artifacts/contracts/LadyLlamas.json";
+import { getProviderRandom } from "../utils/provider";
 
 export default function useMintContract() {
   const [mintContract, setMintContract] = useState(null);
@@ -26,7 +27,7 @@ export default function useMintContract() {
     } else {
       console.log("Using alchemy provider...");
 
-      const web3 = createAlchemyWeb3(process.env.PROVIDER_SECONDARY);
+      const web3 = createAlchemyWeb3(getProviderRandom());
 
       const mintContract = new web3.eth.Contract(
         LadyLlamas,
