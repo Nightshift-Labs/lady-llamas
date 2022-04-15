@@ -14,8 +14,12 @@ const WalletConnector = () => {
     const provider = window.localStorage.getItem("provider");
     if (provider) {
       activate(connectors[provider]);
-      getENS();
     }
+  }, []);
+
+  useEffect(() => {
+    console.log(active);
+    getENS();
   }, [active, account]);
 
   const [name, setName] = useState("");

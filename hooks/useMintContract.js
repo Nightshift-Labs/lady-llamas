@@ -26,7 +26,7 @@ export default function useMintContract() {
     } else {
       console.log("Using alchemy provider...");
 
-      const web3 = createAlchemyWeb3(process.env.PROVIDER);
+      const web3 = createAlchemyWeb3(process.env.PROVIDER_SECONDARY);
 
       const mintContract = new web3.eth.Contract(
         LadyLlamas,
