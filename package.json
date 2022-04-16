@@ -22,7 +22,9 @@
     "next": "12.1.5",
     "postcss": "^8.4.12",
     "react": "18.0.0",
+    "react-compare-image": "^3.1.0",
     "react-dom": "18.0.0",
+    "react-icons": "^4.3.1",
     "react-modal": "^3.14.4",
     "tailwindcss": "^3.0.24",
     "web3": "^1.7.3"

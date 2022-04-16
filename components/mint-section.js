@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import moment from "moment";
+import ReactCompareImage from "react-compare-image";
+import { FaSpinner } from "react-icons/fa";
 
 import useMintContract from "../hooks/useMintContract";
 import { getOwnerNfts } from "../services/nft-service";
@@ -9,8 +11,8 @@ import { getOwnerNfts } from "../services/nft-service";
 const mock = {
   address: "0xc06Ff3aC0C1f3CE73966cD8Bf8AF867559992CFc",
   day1Timestamp: moment().subtract(10, "minutes").unix(),
-  day2Timestamp: moment().subtract(4, "minutes").unix(),
-  day3Timestamp: moment().subtract(3, "minutes").unix(),
+  day2Timestamp: moment().subtract(5, "minutes").unix(),
+  day3Timestamp: moment().subtract(10, "minutes").unix(),
   maxPerWallet: 1,
 };
 
@@ -27,6 +29,7 @@ const MintSection = () => {
   const [maxPerWallet, setMaxPerWallet] = useState(0);
   const [eligible, setEligible] = useState(false);
   const [mintCount, setMintCount] = useState(1);
+  const [refresh, setRefresh] = useState(false);
 
   const [day1Timestamp, setDay1Timestamp] = useState();
   const [day2Timestamp, setDay2Timestamp] = useState();
@@ -42,12 +45,11 @@ const MintSection = () => {
     init();
   }, [mintContract, chainId, account]);
 
-  console.log(account);
-
   //functions
   const initContractValues = async () => {
     try {
       if (mintContract && active && account) {
+        console.log(mintContract);
         const minterMaximumCapacity = await mintContract.methods
           .minterMaximumCapacity()
           .call();
@@ -68,6 +70,7 @@ const MintSection = () => {
         setDay2Timestamp(day2Timestamp);
         setDay3Timestamp(day3Timestamp);
 
+        console.log("getting nfts...");
         const now = moment().unix();
         const lazyLlamasNfts = await getOwnerNfts(mock.address);
         const numOfLazyLlamasOwned = lazyLlamasNfts.length;
@@ -79,6 +82,7 @@ const MintSection = () => {
            * Wednesday April 27th
             • - 1 or 2 LBL In Wallet:0.2 ETH mint. (1 max per wallet)
            */
+
           setIsDay3(true);
           const maxPerWallet = 1;
           setMaxPerWallet(maxPerWallet);
@@ -97,6 +101,7 @@ const MintSection = () => {
            * Tuesday April 26th
             • - Whitelist Mint: 0.15 ETH mint. (1 max per wallet)
            */
+
           setIsDay2(true);
           const maxPerWallet = 1;
           setMaxPerWallet(maxPerWallet);
@@ -121,6 +126,7 @@ const MintSection = () => {
             • - 5+ llamas @ 0.1 ETH per mint. Can mint according to how many multiples of 5.
             • - 3 or 4 LBL = 0.15 ETH mint. (1 max per wallet)
           */
+
           setIsDay1(true);
 
           if (numOfLazyLlamasOwned >= 5) {
@@ -190,6 +196,25 @@ const MintSection = () => {
     }
   };
 
+  const onRefresh = async () => {
+    refreshMinted();
+  };
+
+  const refreshMinted = async () => {
+    setRefresh(true);
+    try {
+      const totalSupply = await mintContract.methods.totalSupply().call();
+      setTotalSupply(totalSupply);
+      setTimeout(() => {
+        setRefresh(false);
+      }, 500);
+    } catch (e) {
+      setTimeout(() => {
+        setRefresh(false);
+      }, 500);
+    }
+  };
+
   //if sold out
   if (Number(totalSupply) === Number(minterMaximumCapacity)) {
     return (
@@ -239,6 +264,22 @@ const MintSection = () => {
         <input type="text" value={mintCount} readOnly />
         <input type="button" onClick={() => updateMintCount(1)} value="+" />
         <button onClick={() => onMint()}>MINT</button>
+        <div>
+          {refresh ? (
+            <div>
+              <p>
+                <FaSpinner />
+              </p>
+            </div>
+          ) : (
+            <button onClick={() => onRefresh()}>Refresh</button>
+          )}
+        </div>
+        <ReactCompareImage
+          leftImage="/lady-llama-left.jpg"
+          rightImage="/lady-llama-right.jpg"
+        />
+        ;
       </section>
     </>
   );
