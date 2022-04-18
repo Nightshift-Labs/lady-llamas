@@ -22,7 +22,7 @@ console.log(mock);
 const MintSection = () => {
   const { mintContract, web3 } = useMintContract();
   const { account, active, chainId } = useWeb3React();
-  const { isOpen, setIsOpen } = useContext(WalletModalContext);
+  const { setIsOpen } = useContext(WalletModalContext);
 
   const [lazyLlamasNfts, setLazyLlamasNfts] = useState([]);
   const [numOfLazyLlamasOwned, setNumOfLazyLlamasOwned] = useState(0);
@@ -35,6 +35,7 @@ const MintSection = () => {
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(false);
   const [mintActive, setMintActive] = useState(false);
+  const [dailyMintPriceText, setDailyMintPriceText] = useState("");
 
   const [day1Timestamp, setDay1Timestamp] = useState();
   const [day2Timestamp, setDay2Timestamp] = useState();
@@ -43,6 +44,12 @@ const MintSection = () => {
   const [isDay2, setIsDay2] = useState(false);
   const [isDay3, setIsDay3] = useState(false);
 
+  const mintPriceText = {
+    day1: "DAY 1: Llama Holders (Mint Price: 0.1 - 0.15 ETH)",
+    day2: "DAY 2: Whitelist Sale (Mint Price: 0.15 ETH)",
+    day3: "DAY 3: Llama Holders (1-3) - Mint Price: 0.2 ETH",
+  };
+
   useEffect(() => {
     const init = async () => {
       initContractValues();
@@ -50,7 +57,7 @@ const MintSection = () => {
     init();
   }, [mintContract, chainId, account]);
 
-  //functions
+  // functions
   const initContractValues = async () => {
     try {
       setLoading(true);
@@ -81,89 +88,106 @@ const MintSection = () => {
         setNumOfLazyLlamasOwned(numOfLazyLlamasOwned);
 
         if (now >= day3Timestamp) {
-          /**
-           * Wednesday April 27th
-            • - 1 or 2 LBL In Wallet:0.2 ETH mint. (1 max per wallet)
-           */
-
-          setIsDay3(true);
-          const maxPerWallet = 1;
-          setMaxPerWallet(maxPerWallet);
-          setMintActive(true);
-
-          if (numOfLazyLlamasOwned >= 1) {
-            const minterFeesOnePlusDayThree = await mintContract.methods
-              .minterFeesOnePlusDayThree()
-              .call();
-            setPrice(minterFeesOnePlusDayThree.toString());
-            setEligible(true);
-          } else {
-            setEligible(false);
-          }
+          await setDay3State();
         } else if (now >= day2Timestamp) {
-          /**
-           * Tuesday April 26th
-            • - Whitelist Mint: 0.15 ETH mint. (1 max per wallet)
-           */
-
-          setIsDay2(true);
-          const maxPerWallet = 1;
-          setMaxPerWallet(maxPerWallet);
-          setMintActive(true);
-
-          const myWhitelistStatus = await mintContract.methods
-            .myWhitelistStatus(account)
-            .call();
-
-          if (myWhitelistStatus) {
-            const minterFeesThreePlusOrWL = await mintContract.methods
-              .minterFeesThreePlusOrWL()
-              .call();
-
-            setPrice(minterFeesThreePlusOrWL);
-            setEligible(true);
-          } else {
-            setEligible(false);
-          }
+          await setDay2State();
         } else if (now >= day1Timestamp) {
-          /**
-           * Monday April 25th
-            • - 5+ llamas @ 0.1 ETH per mint. Can mint according to how many multiples of 5.
-            • - 3 or 4 LBL = 0.15 ETH mint. (1 max per wallet)
-          */
-
-          setIsDay1(true);
-          setMintActive(true);
-
-          if (numOfLazyLlamasOwned >= 5) {
-            const maxPerWallet = Math.floor(numOfLazyLlamasOwned / 5);
-            setMaxPerWallet(maxPerWallet);
-
-            const minterFeesFivePlus = await mintContract.methods
-              .minterFeesFivePlus()
-              .call();
-
-            setPrice(minterFeesFivePlus);
-            setEligible(true);
-          } else if (numOfLazyLlamasOwned === 3 || numOfLazyLlamasOwned === 4) {
-            const maxPerWallet = 1;
-            setMaxPerWallet(maxPerWallet);
-
-            const minterFeesThreePlusOrWL = await mintContract.methods
-              .minterFeesThreePlusOrWL()
-              .call();
-
-            setPrice(minterFeesThreePlusOrWL);
-            setEligible(true);
-          } else {
-            setEligible(false);
-          }
+          await setDay1State(numOfLazyLlamasOwned);
         }
       }
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const setDay1State = async (numOfLazyLlamasOwned) => {
+    /**
+       * Monday April 25th
+        • - 5+ llamas @ 0.1 ETH per mint. Can mint according to how many multiples of 5.
+        • - 3 or 4 LBL = 0.15 ETH mint. (1 max per wallet)
+      */
+
+    setIsDay1(true);
+    setMintActive(true);
+    setDailyMintPriceText(mintPriceText.day1);
+
+    if (numOfLazyLlamasOwned >= 5) {
+      const maxPerWallet = Math.floor(numOfLazyLlamasOwned / 5);
+      setMaxPerWallet(maxPerWallet);
+
+      const minterFeesFivePlus = await mintContract.methods
+        .minterFeesFivePlus()
+        .call();
+
+      setPrice(minterFeesFivePlus);
+      setEligible(true);
+    } else if (numOfLazyLlamasOwned === 3 || numOfLazyLlamasOwned === 4) {
+      const maxPerWallet = 1;
+      setMaxPerWallet(maxPerWallet);
+
+      const minterFeesThreePlusOrWL = await mintContract.methods
+        .minterFeesThreePlusOrWL()
+        .call();
+
+      setPrice(minterFeesThreePlusOrWL);
+      setEligible(true);
+    } else {
+      setEligible(false);
+    }
+  };
+
+  const setDay2State = async () => {
+    /**
+     * Tuesday April 26th
+      • - Whitelist Mint: 0.15 ETH mint. (1 max per wallet)
+      */
+
+    setIsDay2(true);
+    setMintActive(true);
+    setDailyMintPriceText(mintPriceText.day2);
+
+    const maxPerWallet = 1;
+    setMaxPerWallet(maxPerWallet);
+
+    const myWhitelistStatus = await mintContract.methods
+      .myWhitelistStatus(account)
+      .call();
+
+    if (myWhitelistStatus) {
+      const minterFeesThreePlusOrWL = await mintContract.methods
+        .minterFeesThreePlusOrWL()
+        .call();
+
+      setPrice(minterFeesThreePlusOrWL);
+      setEligible(true);
+    } else {
+      setEligible(false);
+    }
+  };
+
+  const setDay3State = async () => {
+    /**
+     * Wednesday April 27th
+      • - 1 or 2 LBL In Wallet:0.2 ETH mint. (1 max per wallet)
+      */
+
+    setIsDay3(true);
+    setMintActive(true);
+    setDailyMintPriceText(mintPriceText.day3);
+
+    const maxPerWallet = 1;
+    setMaxPerWallet(maxPerWallet);
+
+    if (numOfLazyLlamasOwned >= 1) {
+      const minterFeesOnePlusDayThree = await mintContract.methods
+        .minterFeesOnePlusDayThree()
+        .call();
+      setPrice(minterFeesOnePlusDayThree.toString());
+      setEligible(true);
+    } else {
+      setEligible(false);
     }
   };
 
@@ -376,6 +400,7 @@ const MintSection = () => {
           egestas ex. Aliquam erat volutpat. Phasellus luctus, sapien et ornare
           efficitur, est lorem varius purus, in congue orci nisi nec dolor.
         </p>
+        <p>{dailyMintPriceText}</p>
         <ReactCompareImage
           leftImage="/lady-llama-left.jpg"
           rightImage="/lady-llama-right.jpg"
