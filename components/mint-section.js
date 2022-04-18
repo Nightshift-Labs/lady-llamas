@@ -194,14 +194,86 @@ const MintSection = () => {
     setMintCount(mintCount + val);
   };
 
-  const onMint = async () => {
+  const getTokenIdsFromNFTList = () => {
+    if (lazyLlamasNfts.length === 0) return [];
+
     try {
-      console.log("mint");
+      return lazyLlamasNfts.map((nft) =>
+        Number(
+          nft.tokenUri.raw.substring(
+            nft.tokenUri.raw.lastIndexOf("/") + 1,
+            nft.tokenUri.raw.length
+          )
+        )
+      );
+    } catch (e) {
+      return [];
+    }
+  };
+
+  const onMint = async () => {
+    let tx = {
+      from: account,
+      data: "",
+      to: mintContract._address,
+      value: price * mintCount,
+    };
+
+    const tokenIds = getTokenIdsFromNFTList();
+
+    try {
       if (isDay3) {
+        /**
+         * Wednesday April 27th
+          • - 1 or 2 LBL In Wallet:0.2 ETH mint. (1 max per wallet)
+        */
+        tx.data = mintContract.methods.publicMintOneToOne(tokenIds).encodeABI();
       } else if (isDay2) {
+        /**
+         * Tuesday April 26th
+          • - Whitelist Mint: 0.15 ETH mint. (1 max per wallet)
+        */
+        tx.data = mintContract.methods.whitelistMint().encodeABI();
       } else if (isDay1) {
-      } else {
+        /**
+         * Monday April 25th
+          • - 5+ llamas @ 0.1 ETH per mint. Can mint according to how many multiples of 5.
+          • - 3 or 4 LBL = 0.15 ETH mint. (1 max per wallet)
+        */
+        if (numOfLazyLlamasOwned === 3 || numOfLazyLlamasOwned === 4) {
+          tx.data = mintContract.methods
+            .minterFeesThreePlusOrWL(tokenIds)
+            .encodeABI();
+        } else if (numOfLazyLlamasOwned >= 5) {
+          tx.data = mintContract.methods
+            .publicMintFiveToOne(tokenIds)
+            .encodeABI();
+        }
       }
+
+      console.log(tx);
+      // await web3.eth
+      //   .sendTransaction(tx)
+      //   .once("transactionHash", () => {
+      //     setTransactionStatus(TRANSACTION_STATUS.IN_PROGRESS);
+      //   })
+      //   .once("confirmation", (_confirmationNumber, receipt) => {
+      //     if (receipt && receipt.status === true) {
+      //       setTransactionStatus(TRANSACTION_STATUS.SUCCESS);
+      //       refreshMinted();
+      //     }
+      //     setTimeout(() => {
+      //       setIsOpen(false);
+      //       setTransactionStatus(0);
+      //     }, 2000);
+      //   })
+      //   .once("error", () => {
+      //     setTransactionStatus(TRANSACTION_STATUS.FAILED);
+      //     setTimeout(() => {
+      //       setIsOpen(false);
+      //       setTransactionStatus(0);
+      //     }, 2000);
+      //   });
     } catch (e) {
       console.error(e.message);
     }
