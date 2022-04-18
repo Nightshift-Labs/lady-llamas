@@ -14,7 +14,6 @@ const mock = {
   day1Timestamp: moment().subtract(5, "minutes").unix(),
   day2Timestamp: moment().subtract(5, "minutes").unix(),
   day3Timestamp: moment().subtract(5, "minutes").unix(),
-  maxPerWallet: 1,
 };
 
 console.log(mock);
@@ -76,10 +75,6 @@ const MintSection = () => {
         day2Timestamp = mock.day2Timestamp;
         day3Timestamp = mock.day3Timestamp;
 
-        setDay1Timestamp(day1Timestamp);
-        setDay2Timestamp(day2Timestamp);
-        setDay3Timestamp(day3Timestamp);
-
         console.log("getting nfts...");
         const now = moment().unix();
         const lazyLlamasNfts = await getOwnerNfts(mock.address);
@@ -88,7 +83,7 @@ const MintSection = () => {
         setNumOfLazyLlamasOwned(numOfLazyLlamasOwned);
 
         if (now >= day3Timestamp) {
-          await setDay3State();
+          await setDay3State(numOfLazyLlamasOwned);
         } else if (now >= day2Timestamp) {
           await setDay2State();
         } else if (now >= day1Timestamp) {
@@ -167,7 +162,7 @@ const MintSection = () => {
     }
   };
 
-  const setDay3State = async () => {
+  const setDay3State = async (numOfLazyLlamasOwned) => {
     /**
      * Wednesday April 27th
       • - 1 or 2 LBL In Wallet:0.2 ETH mint. (1 max per wallet)
