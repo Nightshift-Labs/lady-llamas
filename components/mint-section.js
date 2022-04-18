@@ -34,6 +34,7 @@ const MintSection = () => {
   const [mintCount, setMintCount] = useState(1);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isMintActive, setIsMintActive] = useState(false);
 
   const [day1Timestamp, setDay1Timestamp] = useState();
   const [day2Timestamp, setDay2Timestamp] = useState();
@@ -91,6 +92,7 @@ const MintSection = () => {
           setIsDay3(true);
           const maxPerWallet = 1;
           setMaxPerWallet(maxPerWallet);
+          setIsMintActive(true);
 
           if (numOfLazyLlamasOwned >= 1) {
             const minterFeesOnePlusDayThree = await mintContract.methods
@@ -110,6 +112,7 @@ const MintSection = () => {
           setIsDay2(true);
           const maxPerWallet = 1;
           setMaxPerWallet(maxPerWallet);
+          setIsMintActive(true);
 
           const myWhitelistStatus = await mintContract.methods
             .myWhitelistStatus(account)
@@ -133,6 +136,7 @@ const MintSection = () => {
           */
 
           setIsDay1(true);
+          setIsMintActive(true);
 
           if (numOfLazyLlamasOwned >= 5) {
             const maxPerWallet = Math.floor(numOfLazyLlamasOwned / 5);
@@ -264,7 +268,11 @@ const MintSection = () => {
   };
 
   const ConnectWalletButton = () => {
-    return <h1>CONNECT WALLET BUTTON</h1>;
+    return (
+      <button type="button" onClick={() => setIsOpen(true)}>
+        <span>Connect Wallet</span>
+      </button>
+    );
   };
 
   // mint view
@@ -282,18 +290,24 @@ const MintSection = () => {
           rightImage="/lady-llama-right.jpg"
         />
         {loading && <h1>Loading...</h1>}
-        {!loading && isSoldOut() && <h1>SOLD OUT</h1>}
-        {!loading && !isSoldOut() && (
+        {!loading && !isMintActive && !active && <ConnectWalletButton />}
+        {!loading && isMintActive && (
           <>
-            {eligible ? (
-              <>
-                <MintTracker />
-                {active ? <MintButton /> : <ConnectWalletButton />}
-              </>
+            {isSoldOut() ? (
+              <h1>SOLD OUT</h1>
             ) : (
               <>
-                {" "}
-                <h1>Sorry you are not eligible</h1>
+                {eligible ? (
+                  <>
+                    <MintTracker />
+                    {active ? <MintButton /> : <ConnectWalletButton />}
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    <h1>Sorry you are not eligible</h1>
+                  </>
+                )}
               </>
             )}
           </>
