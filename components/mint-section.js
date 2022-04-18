@@ -46,9 +46,9 @@ const MintSection = () => {
   const [isDay3, setIsDay3] = useState(false);
 
   const mintPriceText = {
-    day1: "DAY 1: Llama Holders (Mint Price: 0.1 - 0.15 ETH)",
-    day2: "DAY 2: Whitelist Sale (Mint Price: 0.15 ETH)",
-    day3: "DAY 3: Llama Holders (1-3) - Mint Price: 0.2 ETH",
+    day1: "DAY 1: Llama Holders (3+)",
+    day2: "DAY 2: Whitelist Sale ",
+    day3: "DAY 3: Llama Holders (1-2)",
   };
 
   useEffect(() => {
@@ -369,7 +369,6 @@ const MintSection = () => {
     return (
       <>
         <p>{getDay()}</p>
-        <p>Price: {getPrice()}</p>
         <p>Max Per Wallet: {maxPerWallet}</p>
         <input type="button" onClick={() => updateMintCount(-1)} value="-" />
         <input type="text" value={mintCount} readOnly />
@@ -417,7 +416,7 @@ const MintSection = () => {
             dolor.
           </p>
           <p>{dailyMintPriceText}</p>
-
+          {active && mintActive && <p>MINT Price: {getPrice()} ETH</p>}
           {loading && <h1>Loading...</h1>}
           {walletIsNotConnected() && (
             <>
