@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 import { Discord, Twitter, OpenSea } from "./icons";
 import WalletConnector from "./wallet-connector";
@@ -9,7 +10,15 @@ const Navbar = () => {
       <div>
         <div>
           <Link href="/">
-            <a title=""></a>
+            <a title="Lady Llamas">
+              <Image
+                src="/logo.svg"
+                alt="Lady Llamas"
+                width="171"
+                height="56px"
+                priority
+              />
+            </a>
           </Link>
         </div>
         <ul>

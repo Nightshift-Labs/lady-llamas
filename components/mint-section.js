@@ -389,31 +389,37 @@ const MintSection = () => {
   return (
     <>
       <section>
-        <h1>MINT YOUR LADY LLAMA</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis
-          egestas ex. Aliquam erat volutpat. Phasellus luctus, sapien et ornare
-          efficitur, est lorem varius purus, in congue orci nisi nec dolor.
-        </p>
-        <p>{dailyMintPriceText}</p>
-        <ReactCompareImage
-          leftImage="/lady-llama-left.jpg"
-          rightImage="/lady-llama-right.jpg"
-        />
-        {loading && <h1>Loading...</h1>}
-        {walletIsNotConnected() && (
-          <>
-            <MintTracker />
-            <ConnectWalletButton />
-          </>
-        )}
-        {walletIsConnected() && (
-          <>
-            <MintTracker />
-            <MintButton />
-            {!mintActive && <h1>Mint is not active.</h1>}
-          </>
-        )}
+        <div style={{ display: "inline-block", width: "45%" }}>
+          <ReactCompareImage
+            leftImage="/lady-llama-left.jpg"
+            rightImage="/lady-llama-right.jpg"
+          />
+        </div>
+        <div style={{ display: "inline-block", width: "45%" }}>
+          <h1>MINT YOUR LADY LLAMA</h1>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis
+            egestas ex. Aliquam erat volutpat. Phasellus luctus, sapien et
+            ornare efficitur, est lorem varius purus, in congue orci nisi nec
+            dolor.
+          </p>
+          <p>{dailyMintPriceText}</p>
+
+          {loading && <h1>Loading...</h1>}
+          {walletIsNotConnected() && (
+            <>
+              <MintTracker />
+              <ConnectWalletButton />
+            </>
+          )}
+          {walletIsConnected() && (
+            <>
+              <MintTracker />
+              <MintButton />
+              {!mintActive && <h1>Mint is not active.</h1>}
+            </>
+          )}
+        </div>
       </section>
     </>
   );
