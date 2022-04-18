@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useWeb3React } from "@web3-react/core";
 import moment from "moment";
 import ReactCompareImage from "react-compare-image";
@@ -6,6 +6,7 @@ import { FaSpinner } from "react-icons/fa";
 
 import useMintContract from "../hooks/useMintContract";
 import { getOwnerNfts } from "../services/nft-service";
+import { WalletModalContext } from "../layout/page";
 
 //mock values
 const mock = {
@@ -21,6 +22,8 @@ console.log(mock);
 const MintSection = () => {
   const { mintContract, web3 } = useMintContract();
   const { account, active, chainId } = useWeb3React();
+  const { isOpen, setIsOpen } = useContext(WalletModalContext);
+
   const [lazyLlamasNfts, setLazyLlamasNfts] = useState([]);
   const [numOfLazyLlamasOwned, setNumOfLazyLlamasOwned] = useState(0);
   const [minterMaximumCapacity, setMinterMaximumCapacity] = useState(0);
@@ -30,6 +33,7 @@ const MintSection = () => {
   const [eligible, setEligible] = useState(false);
   const [mintCount, setMintCount] = useState(1);
   const [refresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [day1Timestamp, setDay1Timestamp] = useState();
   const [day2Timestamp, setDay2Timestamp] = useState();
@@ -48,6 +52,7 @@ const MintSection = () => {
   //functions
   const initContractValues = async () => {
     try {
+      setLoading(true);
       if (mintContract && active && account) {
         console.log(mintContract);
         const minterMaximumCapacity = await mintContract.methods
@@ -87,7 +92,7 @@ const MintSection = () => {
           const maxPerWallet = 1;
           setMaxPerWallet(maxPerWallet);
 
-          if (numOfLazyLlamasOwned === 1 || numOfLazyLlamasOwned === 2) {
+          if (numOfLazyLlamasOwned >= 1) {
             const minterFeesOnePlusDayThree = await mintContract.methods
               .minterFeesOnePlusDayThree()
               .call();
@@ -156,6 +161,8 @@ const MintSection = () => {
       }
     } catch (e) {
       console.error(e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -215,55 +222,18 @@ const MintSection = () => {
     }
   };
 
-  //if sold out
-  if (Number(totalSupply) === Number(minterMaximumCapacity)) {
-    return (
-      <section>
-        <h1>SOLD OUT</h1>
-      </section>
-    );
-  }
+  const isSoldOut = () => {
+    return Number(totalSupply) === Number(minterMaximumCapacity);
+  };
 
-  //if not active
-  if (!active) {
+  // control
+  const MintTracker = () => {
     return (
-      <section>
-        <h1>Please connect your wallet</h1>
-      </section>
-    );
-  }
-
-  //if not eligible
-  if (!eligible) {
-    return (
-      <section>
-        <h1>Sorry you are not eligible</h1>
-      </section>
-    );
-  }
-
-  // mint view
-  return (
-    <>
-      <section>
-        <h1>MINT PAGE</h1>
-        <p>Lazy Llamas Owned: {numOfLazyLlamasOwned}</p>
-        <ul>
-          {lazyLlamasNfts &&
-            lazyLlamasNfts.map((lazyLlama, index) => {
-              return <li key={index}>{lazyLlama.metadata.name}</li>;
-            })}
-        </ul>
+      <>
         <p>
           {totalSupply}/{minterMaximumCapacity}
         </p>
-        <p>{getDay()}</p>
-        <p>Price: {getPrice()}</p>
-        <p>Max Per Wallet: {maxPerWallet}</p>
-        <input type="button" onClick={() => updateMintCount(-1)} value="-" />
-        <input type="text" value={mintCount} readOnly />
-        <input type="button" onClick={() => updateMintCount(1)} value="+" />
-        <button onClick={() => onMint()}>MINT</button>
+        <p>MINTED</p>
         <div>
           {refresh ? (
             <div>
@@ -275,11 +245,59 @@ const MintSection = () => {
             <button onClick={() => onRefresh()}>Refresh</button>
           )}
         </div>
+      </>
+    );
+  };
+
+  const MintButton = () => {
+    return (
+      <>
+        <p>{getDay()}</p>
+        <p>Price: {getPrice()}</p>
+        <p>Max Per Wallet: {maxPerWallet}</p>
+        <input type="button" onClick={() => updateMintCount(-1)} value="-" />
+        <input type="text" value={mintCount} readOnly />
+        <input type="button" onClick={() => updateMintCount(1)} value="+" />
+        <button onClick={() => onMint()}>MINT</button>
+      </>
+    );
+  };
+
+  const ConnectWalletButton = () => {
+    return <h1>CONNECT WALLET BUTTON</h1>;
+  };
+
+  // mint view
+  return (
+    <>
+      <section>
+        <h1>MINT YOUR LADY LLAMA</h1>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis
+          egestas ex. Aliquam erat volutpat. Phasellus luctus, sapien et ornare
+          efficitur, est lorem varius purus, in congue orci nisi nec dolor.
+        </p>
         <ReactCompareImage
           leftImage="/lady-llama-left.jpg"
           rightImage="/lady-llama-right.jpg"
         />
-        ;
+        {loading && <h1>Loading...</h1>}
+        {!loading && isSoldOut() && <h1>SOLD OUT</h1>}
+        {!loading && !isSoldOut() && (
+          <>
+            {eligible ? (
+              <>
+                <MintTracker />
+                {active ? <MintButton /> : <ConnectWalletButton />}
+              </>
+            ) : (
+              <>
+                {" "}
+                <h1>Sorry you are not eligible</h1>
+              </>
+            )}
+          </>
+        )}
       </section>
     </>
   );

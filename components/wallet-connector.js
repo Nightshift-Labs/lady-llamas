@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
+import { useEffect, useState, useContext } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 
 import { connectors } from "../utils/connectors";
-
-const WalletModal = dynamic(() => import("../components/wallet-modal"));
+import { WalletModalContext } from "../layout/page";
 
 const WalletConnector = () => {
   const { account, activate, deactivate, active } = useWeb3React();
+  const { setIsOpen } = useContext(WalletModalContext);
 
   useEffect(() => {
     const provider = window.localStorage.getItem("provider");
@@ -18,16 +17,10 @@ const WalletConnector = () => {
   }, []);
 
   useEffect(() => {
-    console.log(active);
     getENS();
   }, [active, account]);
 
   const [name, setName] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-
-  const onClose = () => {
-    setIsOpen(false);
-  };
 
   const refreshState = () => {
     window.localStorage.setItem("provider", undefined);
@@ -61,23 +54,20 @@ const WalletConnector = () => {
   };
 
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => (active ? disconnect() : setIsOpen(true))}
-      >
-        {active ? (
-          <span>
-            {name && name.startsWith("0x")
-              ? `${name.substr(0, 5)}...${name.substr(-4, 4)}`
-              : name}
-          </span>
-        ) : (
-          <span>Connect Wallet</span>
-        )}
-      </button>
-      <WalletModal isOpen={isOpen} closeModal={onClose} />
-    </>
+    <button
+      type="button"
+      onClick={() => (active ? disconnect() : setIsOpen(true))}
+    >
+      {active ? (
+        <span>
+          {name && name.startsWith("0x")
+            ? `${name.substr(0, 5)}...${name.substr(-4, 4)}`
+            : name}
+        </span>
+      ) : (
+        <span>Connect Wallet</span>
+      )}
+    </button>
   );
 };
 

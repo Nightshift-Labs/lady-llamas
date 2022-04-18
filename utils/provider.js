@@ -1,4 +1,4 @@
-export const getProviderRandom = () => {
+export const getProviderRoundRobin = () => {
   const number = Math.floor(Math.random() * 2);
   if (number === 0) {
     return process.env.PROVIDER_PRIMARY;

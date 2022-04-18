@@ -1,8 +1,10 @@
+import { useContext } from "react";
 import Modal from "react-modal";
 import Image from "next/image";
 import { useWeb3React } from "@web3-react/core";
 
 import { connectors } from "../utils/connectors";
+import { WalletModalContext } from "../layout/page";
 
 const customStyles = {
   content: {
@@ -14,8 +16,9 @@ const customStyles = {
 
 Modal.setAppElement("body");
 
-const WalletModal = ({ isOpen, closeModal }) => {
+const WalletModal = ({}) => {
   const { activate } = useWeb3React();
+  const { isOpen, closeModal } = useContext(WalletModalContext);
 
   const setProvider = (type) => {
     window.localStorage.setItem("provider", type);
@@ -36,7 +39,7 @@ const WalletModal = ({ isOpen, closeModal }) => {
             alt="Coinbase Wallet Logo"
             width={25}
             height={25}
-            borderRadius="3px"
+            borderradius="3px"
           />
           Coinbase Wallet
         </button>{" "}
@@ -54,7 +57,7 @@ const WalletModal = ({ isOpen, closeModal }) => {
             alt="Wallet Connect Logo"
             width={25}
             height={25}
-            borderRadius="3px"
+            borderradius="3px"
           />
           Wallet Connect
         </button>{" "}
@@ -72,7 +75,7 @@ const WalletModal = ({ isOpen, closeModal }) => {
             alt="Metamask Logo"
             width={25}
             height={25}
-            borderRadius="3px"
+            borderradius="3px"
           />
           Metamask
         </button>{" "}
