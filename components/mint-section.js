@@ -188,18 +188,6 @@ const MintSection = () => {
     }
   };
 
-  const getDay = () => {
-    if (isDay3) {
-      return "Day 3";
-    } else if (isDay2) {
-      return "Day 2";
-    } else if (isDay1) {
-      return "Day 1";
-    } else {
-      return "Day 0";
-    }
-  };
-
   const getPrice = () => {
     const formattedPrice = web3?.utils.fromWei(price.toString());
     return Number(formattedPrice).toFixed(3);
@@ -368,8 +356,6 @@ const MintSection = () => {
 
     return (
       <>
-        <p>{getDay()}</p>
-        <p>Max Per Wallet: {maxPerWallet}</p>
         <input type="button" onClick={() => updateMintCount(-1)} value="-" />
         <input type="text" value={mintCount} readOnly />
         <input type="button" onClick={() => updateMintCount(1)} value="+" />
@@ -415,8 +401,12 @@ const MintSection = () => {
             ornare efficitur, est lorem varius purus, in congue orci nisi nec
             dolor.
           </p>
-          <p>{dailyMintPriceText}</p>
-          {active && mintActive && <p>MINT Price: {getPrice()} ETH</p>}
+          {active && mintActive && (
+            <>
+              <p>{dailyMintPriceText}</p>
+              <p>MINT Price: {getPrice()} ETH</p>
+            </>
+          )}
           {loading && <h1>Loading...</h1>}
           {walletIsNotConnected() && (
             <>
