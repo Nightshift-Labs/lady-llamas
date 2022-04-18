@@ -3,6 +3,8 @@ import { useWeb3React } from "@web3-react/core";
 import moment from "moment";
 import ReactCompareImage from "react-compare-image";
 import { FaSpinner } from "react-icons/fa";
+import { FaChevronLeft } from "react-icons/fa";
+import { FaChevronRight } from "react-icons/fa";
 
 import useMintContract from "../hooks/useMintContract";
 import { getOwnerNfts } from "../services/nft-service";
@@ -385,6 +387,16 @@ const MintSection = () => {
     );
   };
 
+  const DragHandle = () => {
+    return (
+      <div style={{ color: "white" }}>
+        <FaChevronLeft />
+        <p style={{ fontSize: 25, fontWeight: "bold" }}>DRAG</p>
+        <FaChevronRight />
+      </div>
+    );
+  };
+
   // mint view
   return (
     <>
@@ -393,6 +405,7 @@ const MintSection = () => {
           <ReactCompareImage
             leftImage="/lady-llama-left.jpg"
             rightImage="/lady-llama-right.jpg"
+            handle={<DragHandle />}
           />
         </div>
         <div style={{ display: "inline-block", width: "45%" }}>
