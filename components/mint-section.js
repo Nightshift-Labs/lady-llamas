@@ -34,7 +34,7 @@ const MintSection = () => {
   const [mintCount, setMintCount] = useState(1);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isMintActive, setIsMintActive] = useState(false);
+  const [mintActive, setMintActive] = useState(false);
 
   const [day1Timestamp, setDay1Timestamp] = useState();
   const [day2Timestamp, setDay2Timestamp] = useState();
@@ -92,7 +92,7 @@ const MintSection = () => {
           setIsDay3(true);
           const maxPerWallet = 1;
           setMaxPerWallet(maxPerWallet);
-          setIsMintActive(true);
+          setMintActive(true);
 
           if (numOfLazyLlamasOwned >= 1) {
             const minterFeesOnePlusDayThree = await mintContract.methods
@@ -136,7 +136,7 @@ const MintSection = () => {
           */
 
           setIsDay1(true);
-          setIsMintActive(true);
+          setMintActive(true);
 
           if (numOfLazyLlamasOwned >= 5) {
             const maxPerWallet = Math.floor(numOfLazyLlamasOwned / 5);
@@ -230,30 +230,52 @@ const MintSection = () => {
     return Number(totalSupply) === Number(minterMaximumCapacity);
   };
 
+  const walletIsConnected = () => {
+    return !loading && active;
+  };
+
+  const walletIsNotConnected = () => {
+    return !loading && !active;
+  };
+
   // control
   const MintTracker = () => {
-    return (
-      <>
-        <p>
-          {totalSupply}/{minterMaximumCapacity}
-        </p>
-        <p>MINTED</p>
-        <div>
-          {refresh ? (
-            <div>
-              <p>
-                <FaSpinner />
-              </p>
-            </div>
-          ) : (
-            <button onClick={() => onRefresh()}>Refresh</button>
-          )}
-        </div>
-      </>
-    );
+    if (!mintActive) {
+      return;
+    }
+
+    if (!isSoldOut()) {
+      return (
+        <>
+          <p>
+            {totalSupply}/{minterMaximumCapacity}
+          </p>
+          <p>MINTED</p>
+          <div>
+            {refresh ? (
+              <div>
+                <p>
+                  <FaSpinner />
+                </p>
+              </div>
+            ) : (
+              <button onClick={() => onRefresh()}>Refresh</button>
+            )}
+          </div>
+        </>
+      );
+    } else {
+      return <h1>Sold out.</h1>;
+    }
   };
 
   const MintButton = () => {
+    if (!mintActive) return;
+
+    if (isSoldOut()) return;
+
+    if (!eligible) return <h1>Not eligible.</h1>;
+
     return (
       <>
         <p>{getDay()}</p>
@@ -290,26 +312,17 @@ const MintSection = () => {
           rightImage="/lady-llama-right.jpg"
         />
         {loading && <h1>Loading...</h1>}
-        {!loading && !isMintActive && !active && <ConnectWalletButton />}
-        {!loading && isMintActive && (
+        {walletIsNotConnected() && (
           <>
-            {isSoldOut() ? (
-              <h1>SOLD OUT</h1>
-            ) : (
-              <>
-                {eligible ? (
-                  <>
-                    <MintTracker />
-                    {active ? <MintButton /> : <ConnectWalletButton />}
-                  </>
-                ) : (
-                  <>
-                    {" "}
-                    <h1>Sorry you are not eligible</h1>
-                  </>
-                )}
-              </>
-            )}
+            <MintTracker />
+            <ConnectWalletButton />
+          </>
+        )}
+        {walletIsConnected() && (
+          <>
+            <MintTracker />
+            <MintButton />
+            {!mintActive && <h1>Mint is not active.</h1>}
           </>
         )}
       </section>
