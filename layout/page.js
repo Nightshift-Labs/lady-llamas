@@ -1,11 +1,11 @@
 import { useState, createContext } from "react";
 import dynamic from "next/dynamic";
 
-import WalletModal from "../components/wallet-modal";
-
 export const WalletModalContext = createContext(null);
 
 const Navbar = dynamic(() => import("../components/navbar"));
+const Footer = dynamic(() => import("../components/footer"));
+const WalletModal = dynamic(() => import("../components/wallet-modal"));
 
 const Page = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +25,7 @@ const Page = ({ children }) => {
       >
         <Navbar />
         <main>{children}</main>
+        <Footer />
         <WalletModal />
       </WalletModalContext.Provider>
     </div>

@@ -1,9 +1,8 @@
 import Link from "next/link";
 
 import { Discord, Twitter, OpenSea } from "./icons";
-import WalletConnector from "./wallet-connector";
 
-const Navbar = () => {
+const Footer = () => {
   return (
     <nav>
       <div>
@@ -14,9 +13,6 @@ const Navbar = () => {
         </div>
         <ul>
           <li>
-            <WalletConnector />
-          </li>
-          <li>
             <a
               href={process.env.OPENSEA_LINK}
               title="View on OpenSea"
@@ -24,6 +20,7 @@ const Navbar = () => {
               rel="noopener noreferrer"
             >
               <OpenSea />
+              OPENSEA
             </a>
           </li>
           <li>
@@ -34,6 +31,7 @@ const Navbar = () => {
               rel="noopener noreferrer"
             >
               <Twitter />
+              TWITTER
             </a>
           </li>
           <li>
@@ -44,7 +42,17 @@ const Navbar = () => {
               rel="noopener noreferrer"
             >
               <Discord />
+              DISCORD
             </a>
+          </li>
+          <li>
+            <a
+              href=""
+              title="Contract"
+              target="_blank"
+              rel="noopener noreferrer"
+            />
+            CONTRACT
           </li>
         </ul>
       </div>
@@ -52,4 +60,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Footer;
