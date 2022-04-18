@@ -11,9 +11,9 @@ import { WalletModalContext } from "../layout/page";
 //mock values
 const mock = {
   address: "0xc06Ff3aC0C1f3CE73966cD8Bf8AF867559992CFc",
-  day1Timestamp: moment().subtract(10, "minutes").unix(),
+  day1Timestamp: moment().subtract(5, "minutes").unix(),
   day2Timestamp: moment().subtract(5, "minutes").unix(),
-  day3Timestamp: moment().subtract(10, "minutes").unix(),
+  day3Timestamp: moment().subtract(5, "minutes").unix(),
   maxPerWallet: 1,
 };
 
@@ -62,10 +62,7 @@ const MintSection = () => {
 
         const totalSupply = await mintContract.methods.totalSupply().call();
 
-        console.log("minterMaximumCapacity", minterMaximumCapacity);
         setMinterMaximumCapacity(minterMaximumCapacity);
-
-        console.log("totalSupply", totalSupply);
         setTotalSupply(totalSupply);
 
         day1Timestamp = mock.day1Timestamp;
@@ -112,7 +109,7 @@ const MintSection = () => {
           setIsDay2(true);
           const maxPerWallet = 1;
           setMaxPerWallet(maxPerWallet);
-          setIsMintActive(true);
+          setMintActive(true);
 
           const myWhitelistStatus = await mintContract.methods
             .myWhitelistStatus(account)
@@ -242,7 +239,7 @@ const MintSection = () => {
         */
         if (numOfLazyLlamasOwned === 3 || numOfLazyLlamasOwned === 4) {
           tx.data = mintContract.methods
-            .minterFeesThreePlusOrWL(tokenIds)
+            .publicMintThreeToOne(tokenIds)
             .encodeABI();
         } else if (numOfLazyLlamasOwned >= 5) {
           tx.data = mintContract.methods
