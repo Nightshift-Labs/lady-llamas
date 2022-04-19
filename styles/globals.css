@@ -64,10 +64,9 @@ body {
   background-image: url("/images/background-grad.svg");
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: bottom;
   line-height: 20px;
   height: 100vh;
-  min-height: 850px;
 }
 
 .outline-title {

@@ -17,7 +17,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        connected: "#1EFF00",
+        connected: "#84DCCF",
         lightPurple: "#AEB0D5",
       },
     },

@@ -6,6 +6,7 @@ import ReactCompareImage from "react-compare-image";
 import { FaSpinner } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
+import Image from "next/image";
 
 import useMintContract from "../hooks/useMintContract";
 import { getOwnerNfts } from "../services/nft-service";
@@ -175,7 +176,6 @@ const MintSection = () => {
      * Wednesday April 27th
       • - 1 or 2 LBL In Wallet:0.2 ETH mint. (1 max per wallet)
       */
-
     setIsDay3(true);
     setMintActive(true);
     setDailyMintPriceText(mintPriceText.day3);
@@ -335,20 +335,26 @@ const MintSection = () => {
     if (!isSoldOut()) {
       return (
         <>
-          <p>
-            {totalSupply}/{minterMaximumCapacity}
-          </p>
-          <p>MINTED</p>
-          <div>
-            {refresh ? (
-              <div>
-                <p>
-                  <FaSpinner />
-                </p>
-              </div>
-            ) : (
-              <button onClick={() => onRefresh()}>Refresh</button>
-            )}
+          <div className="flex flex-row">
+            <div>
+              <p className="font-black text-5xl mr-7 mb-1">
+                {totalSupply}/{minterMaximumCapacity}
+              </p>
+              <p className="text-lightPurple">MINTED</p>
+            </div>
+            <div className="mt-6">
+              {refresh ? (
+                <div>
+                  <p>
+                    <FaSpinner />
+                  </p>
+                </div>
+              ) : (
+                <button className="underline" onClick={() => onRefresh()}>
+                  Refresh
+                </button>
+              )}
+            </div>
           </div>
         </>
       );
@@ -366,17 +372,45 @@ const MintSection = () => {
 
     return (
       <>
-        <input type="button" onClick={() => updateMintCount(-1)} value="-" />
-        <input type="text" value={mintCount} readOnly />
-        <input type="button" onClick={() => updateMintCount(1)} value="+" />
-        <button onClick={() => onMint()}>MINT</button>
+        <div className="flex flex-row mt-7">
+          <div className="flex flex-row justify-items-stretch border-2 border-white rounded-full mr-8 items center">
+            <input
+              className="text-center w-4/12 cursor-pointer"
+              type="button"
+              onClick={() => updateMintCount(-1)}
+              value="-"
+            />
+            <input
+              className="bg-transparent text-center w-4/12 border-x-2 border-white"
+              type="text"
+              value={mintCount}
+              readOnly
+            />
+            <input
+              className="text-center w-4/12 cursor-pointer"
+              type="button"
+              onClick={() => updateMintCount(1)}
+              value="+"
+            />
+          </div>
+          <button
+            className="px-20 py-3 font-bold bg-white text-xl text-[#3F4A99] rounded-full"
+            onClick={() => onMint()}
+          >
+            Mint
+          </button>
+        </div>
       </>
     );
   };
 
   const ConnectWalletButton = () => {
     return (
-      <button type="button" onClick={() => setIsOpen(true)}>
+      <button
+        className="mt-7 py-2 px-6 border-2 border-white rounded-full font-bold text-lg"
+        type="button"
+        onClick={() => setIsOpen(true)}
+      >
         <span>Connect Wallet</span>
       </button>
     );
@@ -405,11 +439,18 @@ const MintSection = () => {
             />
           </div>
           <div className="flex flex-col self-center py-12 px-12 max-w-2xl">
-            <h1 className="font-sans font-black text-7xl">
-              <span className="outline-title"> MINT YOUR </span>LADY{" "}
-              <span></span> LLAMA
+            <h1 className="font-sans font-black text-7xl leading-7 text-lightPurple">
+              <span className="outline-title"> MINT YOUR </span>LADY
+              <Image
+                className=""
+                src="/images/Lady-LLamas.gif"
+                alt="Lady-LLamas"
+                width="70"
+                height="79"
+              />
+              LLAMA
             </h1>
-            <div className="my-5 h-1 w-full bg-gradient-to-r from-lightPurple"></div>
+            <div className="my-5 h-2 w-full bg-gradient-to-r from-lightPurple"></div>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
               quis egestas ex. Aliquam erat volutpat. Phasellus luctus, sapien
@@ -419,8 +460,12 @@ const MintSection = () => {
             <div className="mt-8">
               {active && mintActive && (
                 <>
-                  <p>{dailyMintPriceText}</p>
-                  <p>MINT Price: {getPrice()} ETH</p>
+                  <div className="flex flex-row items-center mb-10">
+                    <p className="mr-4">{dailyMintPriceText}</p>
+                    <p className="font-serif bg-[#353C7C] rounded-sm py-2 px-4">
+                      MINT Price: {getPrice()} ETH
+                    </p>
+                  </div>
                 </>
               )}
               {loading && <h1>Loading...</h1>}

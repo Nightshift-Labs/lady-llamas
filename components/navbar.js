@@ -22,7 +22,7 @@ const Navbar = () => {
           </Link>
         </div>
         <ul>
-          <div className="sm:hidden lg:block">
+          <div className="sm:hidden md:hidden lg:block">
             <li>
               <WalletConnector />
             </li>
