@@ -429,9 +429,9 @@ const MintSection = () => {
   // mint view
   return (
     <>
-      <section>
-        <div className="grid lg:grid-cols-2">
-          <div className="min-h-fit w-full">
+      <section className="h-full">
+        <div className="grid lg:grid-cols-2 h-full 2xl:container">
+          <div className="min-h-fit w-full self-center">
             <ReactCompareImage
               leftImage="/lady-llama-left.jpg"
               rightImage="/lady-llama-right.jpg"

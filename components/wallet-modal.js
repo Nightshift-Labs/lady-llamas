@@ -9,9 +9,17 @@ import { WalletModalContext } from "../layout/page";
 const customStyles = {
   content: {
     width: "90%",
-    maxWidth: "550px",
-    height: "300px",
-    color: "black",
+    maxWidth: "300px",
+    height: "400px",
+    border: "none",
+    padding: "",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    color: "#3F4A99",
   },
 };
 
@@ -27,8 +35,10 @@ const WalletModal = ({}) => {
 
   return (
     <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
-      <h3>Connect to Wallet</h3>
-      <div>
+      <h3 className="font-bold text-2xl text-center py-6 border-b-2 border-[#AEB0D5]">
+        Connect to Wallet
+      </h3>
+      <div className="font-bold text-xl text-center py-5 border-b-2 border-[#AEB0D5]">
         <button
           onClick={() => {
             activate(connectors.coinbaseWallet);
@@ -36,17 +46,21 @@ const WalletModal = ({}) => {
             closeModal();
           }}
         >
-          <Image
-            src="/wallet-icons/cbw.png"
-            alt="Coinbase Wallet Logo"
-            width={25}
-            height={25}
-            borderradius="3px"
-          />
-          Coinbase Wallet
+          <div className="flex flex-row space-x-2">
+            <div>
+              <Image
+                src="/wallet-icons/cbw.png"
+                alt="Coinbase Wallet Logo"
+                width={25}
+                height={25}
+                borderradius="3px"
+              />
+            </div>
+            <div>Coinbase Wallet</div>
+          </div>
         </button>{" "}
       </div>
-      <div>
+      <div className="font-bold text-xl text-center py-5 border-b-2 border-[#AEB0D5]">
         <button
           onClick={() => {
             activate(connectors.walletConnect);
@@ -54,17 +68,21 @@ const WalletModal = ({}) => {
             closeModal();
           }}
         >
-          <Image
-            src="/wallet-icons/wc.png"
-            alt="Wallet Connect Logo"
-            width={25}
-            height={25}
-            borderradius="3px"
-          />
-          Wallet Connect
+          <div className="flex flex-row space-x-2">
+            <div>
+              <Image
+                src="/wallet-icons/wc.png"
+                alt="Wallet Connect Logo"
+                width={25}
+                height={25}
+                borderradius="3px"
+              />
+            </div>
+            <div>Wallet Connect</div>
+          </div>
         </button>{" "}
       </div>
-      <div>
+      <div className="font-bold text-xl text-center py-5 border-b-2 border-[#AEB0D5]">
         <button
           onClick={() => {
             activate(connectors.injected);
@@ -72,17 +90,21 @@ const WalletModal = ({}) => {
             closeModal();
           }}
         >
-          <Image
-            src="/wallet-icons/mm.png"
-            alt="Metamask Logo"
-            width={25}
-            height={25}
-            borderradius="3px"
-          />
-          Metamask
+          <div className="flex flex-row space-x-2">
+            <div>
+              <Image
+                src="/wallet-icons/mm.png"
+                alt="Metamask Logo"
+                width={25}
+                height={25}
+                borderradius="3px"
+              />
+            </div>
+            <div>Metamask</div>
+          </div>
         </button>{" "}
       </div>
-      <div>
+      <div className="font-bold text-md text-center mx-auto py-2 mt-6 w-1/2 border-2 border-[#AEB0D5] rounded-full">
         <button
           onClick={() => {
             closeModal();
