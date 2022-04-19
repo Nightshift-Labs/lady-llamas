@@ -6,22 +6,22 @@ import WalletConnector from "./wallet-connector";
 
 const Navbar = () => {
   return (
-    <nav>
-      <div>
-        <div>
+    <nav className="absolute inset-x-0 top-0 h-16 z-10">
+      <div className="container flex justify-between items-center w-full">
+        <div className="py-7">
           <Link href="/">
             <a title="Lady Llamas">
               <Image
                 src="/logo.svg"
                 alt="Lady Llamas"
-                width="171"
+                width="196"
                 height="56px"
                 priority
               />
             </a>
           </Link>
         </div>
-        <ul>
+        <ul className=" flex flex-row items-center flex space-x-5">
           <li>
             <WalletConnector />
           </li>
