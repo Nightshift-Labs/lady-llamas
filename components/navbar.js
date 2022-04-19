@@ -21,40 +21,44 @@ const Navbar = () => {
             </a>
           </Link>
         </div>
-        <ul className=" flex flex-row items-center flex space-x-5">
-          <li>
-            <WalletConnector />
-          </li>
-          <li>
-            <a
-              href={process.env.OPENSEA_LINK}
-              title="View on OpenSea"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <OpenSea />
-            </a>
-          </li>
-          <li>
-            <a
-              href=""
-              title="Follow Twitter"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Twitter />
-            </a>
-          </li>
-          <li>
-            <a
-              href=""
-              title="Join Discord"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Discord />
-            </a>
-          </li>
+        <ul>
+          <div className="sm:hidden lg:block">
+            <li>
+              <WalletConnector />
+            </li>
+          </div>
+          <div className="lg:hidden flex flex-row items-center space-x-3">
+            <li>
+              <a
+                href={process.env.OPENSEA_LINK}
+                title="View on OpenSea"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <OpenSea />
+              </a>
+            </li>
+            <li>
+              <a
+                href=""
+                title="Follow Twitter"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Twitter />
+              </a>
+            </li>
+            <li>
+              <a
+                href=""
+                title="Join Discord"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Discord />
+              </a>
+            </li>
+          </div>
         </ul>
       </div>
     </nav>

@@ -2,13 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: VisbyCF;
+  src: url("../public/fonts/VisbyCF-Bold.otf");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: VisbyCF;
+  src: url("../public/fonts/VisbyCF-Heavy.otf");
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: VisbyCF;
+  src: url("../public/fonts/VisbyCF-Medium.otf");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: Qedysans-Bold;
+  src: url("../public/fonts/Qedysans-Bold.ttf");
+  font-weight: bold;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
   background-color: #0E103E;
   color: #ffff;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  font-family: VisbyCF, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   
 }
@@ -33,4 +57,23 @@ a {
   .container {
     padding: 0 20px;
   }
+}
+
+
+body {
+  background-image: url("/images/background-grad.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  line-height: 20px;
+  height: 100vh;
+  min-height: 850px;
+}
+
+.outline-title {
+  color: rgba(0, 0, 0, 0);
+  -webkit-text-stroke: 2px #AEB0D5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }

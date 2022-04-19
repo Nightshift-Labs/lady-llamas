@@ -59,13 +59,17 @@ const WalletConnector = () => {
       onClick={() => (active ? disconnect() : setIsOpen(true))}
     >
       {active ? (
-        <span>
+        <span className="rounded-full px-8 py-2 flex items-center border-2 backdrop-blur-sm relative transition">
+          <span className="w-3 h-3 bg-connected rounded-full mr-4" />
+          <span className="w-3 h-3 bg-connected rounded-full mr-4 absolute animate-ping opacity-75" />
           {name && name.startsWith("0x")
             ? `${name.substr(0, 5)}...${name.substr(-4, 4)}`
             : name}
         </span>
       ) : (
-        <span>Connect Wallet</span>
+        <span className="py-2 px-6 border-2 border-white rounded-full">
+          Connect Wallet
+        </span>
       )}
     </button>
   );

@@ -11,9 +11,10 @@ const Footer = () => {
             <a title=""></a>
           </Link>
         </div>
-        <ul className=" flex flex-row items-center flex space-x-5">
+        <ul className=" flex flex-row items-center space-x-5">
           <li>
             <a
+              className="flex flex-row text-lightPurple font-bold"
               href={process.env.OPENSEA_LINK}
               title="View on OpenSea"
               target="_blank"
@@ -25,6 +26,7 @@ const Footer = () => {
           </li>
           <li>
             <a
+              className="flex flex-row text-lightPurple font-bold"
               href=""
               title="Follow Twitter"
               target="_blank"
@@ -36,6 +38,7 @@ const Footer = () => {
           </li>
           <li>
             <a
+              className="flex flex-row text-lightPurple font-bold"
               href=""
               title="Join Discord"
               target="_blank"
@@ -45,7 +48,7 @@ const Footer = () => {
               DISCORD
             </a>
           </li>
-          <li>
+          <li className="text-lightPurple font-bold">
             <a
               href=""
               title="Contract"
