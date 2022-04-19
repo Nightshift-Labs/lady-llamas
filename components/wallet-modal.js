@@ -11,6 +11,7 @@ const customStyles = {
     width: "90%",
     maxWidth: "550px",
     height: "300px",
+    color: "black",
   },
 };
 
@@ -26,6 +27,7 @@ const WalletModal = ({}) => {
 
   return (
     <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
+      <h3>Connect to Wallet</h3>
       <div>
         <button
           onClick={() => {
@@ -78,6 +80,15 @@ const WalletModal = ({}) => {
             borderradius="3px"
           />
           Metamask
+        </button>{" "}
+      </div>
+      <div>
+        <button
+          onClick={() => {
+            closeModal();
+          }}
+        >
+          Cancel
         </button>{" "}
       </div>
     </Modal>

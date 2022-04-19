@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { useEffect, useState, useContext } from "react";
 import { useWeb3React } from "@web3-react/core";
 import moment from "moment";
@@ -9,6 +10,10 @@ import { FaChevronRight } from "react-icons/fa";
 import useMintContract from "../hooks/useMintContract";
 import { getOwnerNfts } from "../services/nft-service";
 import { WalletModalContext } from "../layout/page";
+
+const TransactionModal = dynamic(() =>
+  import("../components/transaction-modal")
+);
 
 //mock values
 const mock = {
@@ -24,7 +29,8 @@ const MintSection = () => {
   const { mintContract, web3 } = useMintContract();
   const { account, active, chainId } = useWeb3React();
   const { setIsOpen } = useContext(WalletModalContext);
-
+  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
+  const [transactionStatus, setTransactionStatus] = useState(0);
   const [lazyLlamasNfts, setLazyLlamasNfts] = useState([]);
   const [numOfLazyLlamasOwned, setNumOfLazyLlamasOwned] = useState(0);
   const [minterMaximumCapacity, setMinterMaximumCapacity] = useState(0);
@@ -316,6 +322,10 @@ const MintSection = () => {
     return !loading && !active;
   };
 
+  const closeTransactionModal = () => {
+    setIsTransactionModalOpen(false);
+  };
+
   // control
   const MintTracker = () => {
     if (!mintActive) {
@@ -425,6 +435,11 @@ const MintSection = () => {
           </div>
         </div>
       </section>
+      <TransactionModal
+        isOpen={isTransactionModalOpen}
+        closeModal={closeTransactionModal}
+        transactionStatus={transactionStatus}
+      />
     </>
   );
 };
