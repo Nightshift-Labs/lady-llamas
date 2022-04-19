@@ -21,6 +21,10 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     color: "#3F4A99",
   },
+
+  overlay: {
+    background: "rgb(14, 16, 62, 0.8)",
+  },
 };
 
 Modal.setAppElement("body");
