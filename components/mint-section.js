@@ -386,41 +386,43 @@ const MintSection = () => {
   return (
     <>
       <section>
-        <div style={{ display: "inline-block", width: "45%" }}>
-          <ReactCompareImage
-            leftImage="/lady-llama-left.jpg"
-            rightImage="/lady-llama-right.jpg"
-            handle={<DragHandle />}
-          />
-        </div>
-        <div style={{ display: "inline-block", width: "45%" }}>
-          <h1>MINT YOUR LADY LLAMA</h1>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis
-            egestas ex. Aliquam erat volutpat. Phasellus luctus, sapien et
-            ornare efficitur, est lorem varius purus, in congue orci nisi nec
-            dolor.
-          </p>
-          {active && mintActive && (
-            <>
-              <p>{dailyMintPriceText}</p>
-              <p>MINT Price: {getPrice()} ETH</p>
-            </>
-          )}
-          {loading && <h1>Loading...</h1>}
-          {walletIsNotConnected() && (
-            <>
-              <MintTracker />
-              <ConnectWalletButton />
-            </>
-          )}
-          {walletIsConnected() && (
-            <>
-              <MintTracker />
-              <MintButton />
-              {!mintActive && <h1>Mint is not active.</h1>}
-            </>
-          )}
+        <div className="flex flex-row">
+          <div className="min-h-full w-full">
+            <ReactCompareImage
+              leftImage="/lady-llama-left.jpg"
+              rightImage="/lady-llama-right.jpg"
+              handle={<DragHandle />}
+            />
+          </div>
+          <div className="flex flex-col self-center">
+            <h1>MINT YOUR LADY LLAMA</h1>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+              quis egestas ex. Aliquam erat volutpat. Phasellus luctus, sapien
+              et ornare efficitur, est lorem varius purus, in congue orci nisi
+              nec dolor.
+            </p>
+            {active && mintActive && (
+              <>
+                <p>{dailyMintPriceText}</p>
+                <p>MINT Price: {getPrice()} ETH</p>
+              </>
+            )}
+            {loading && <h1>Loading...</h1>}
+            {walletIsNotConnected() && (
+              <>
+                <MintTracker />
+                <ConnectWalletButton />
+              </>
+            )}
+            {walletIsConnected() && (
+              <>
+                <MintTracker />
+                <MintButton />
+                {!mintActive && <h1>Mint is not active.</h1>}
+              </>
+            )}
+          </div>
         </div>
       </section>
     </>

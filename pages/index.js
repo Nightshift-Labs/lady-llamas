@@ -6,7 +6,7 @@ const MintSection = dynamic(() => import("../components/mint-section"));
 const Home = () => {
   return (
     <>
-      <Header title="Lady Llamas" />
+      <Header title="Mint Your Lady Llama | Lady Llamas" />
       <MintSection />
     </>
   );
