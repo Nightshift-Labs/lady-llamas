@@ -13,6 +13,7 @@ import useMintContract from "../hooks/useMintContract";
 import { getOwnerNfts } from "../services/nft-service";
 import { WalletModalContext } from "../layout/page";
 import { Discord, Twitter, OpenSea } from "./icons";
+import { TRANSACTION_STATUS } from "../utils/constants";
 
 const TransactionModal = dynamic(() =>
   import("../components/transaction-modal")
@@ -21,9 +22,18 @@ const TransactionModal = dynamic(() =>
 //mock values
 const mock = {
   address: "0xc06Ff3aC0C1f3CE73966cD8Bf8AF867559992CFc",
-  day1Timestamp: moment().subtract(5, "minutes").unix(),
-  day2Timestamp: moment().subtract(5, "minutes").unix(),
-  day3Timestamp: moment().subtract(5, "minutes").unix(),
+  epochOne: [
+    moment().subtract(5, "minutes").unix(),
+    moment().subtract(5, "minutes").unix(),
+  ],
+  epochTwo: [
+    moment().subtract(7, "minutes").unix(),
+    moment().subtract(7, "minutes").unix(),
+  ],
+  epochThree: [
+    moment().subtract(10, "minutes").unix(),
+    moment().add(10, "minutes").unix(),
+  ],
 };
 
 console.log(mock);
@@ -47,9 +57,6 @@ const MintSection = () => {
   const [mintActive, setMintActive] = useState(false);
   const [dailyMintPriceText, setDailyMintPriceText] = useState("");
 
-  const [day1Timestamp, setDay1Timestamp] = useState();
-  const [day2Timestamp, setDay2Timestamp] = useState();
-  const [day3Timestamp, setDay3Timestamp] = useState();
   const [isDay1, setIsDay1] = useState(false);
   const [isDay2, setIsDay2] = useState(false);
   const [isDay3, setIsDay3] = useState(false);
@@ -82,23 +89,41 @@ const MintSection = () => {
         setMinterMaximumCapacity(minterMaximumCapacity);
         setTotalSupply(totalSupply);
 
-        day1Timestamp = mock.day1Timestamp;
-        day2Timestamp = mock.day2Timestamp;
-        day3Timestamp = mock.day3Timestamp;
+        // const epochOne = await mintContract.methods.epochOne().call();
+        // const epochTwo = await mintContract.methods.epochTwo().call();
+        // const epochThree = await mintContract.methods.epochThree().call();
 
-        console.log("getting nfts...");
+        const epochOne = mock.epochOne;
+        const epochTwo = mock.epochTwo;
+        const epochThree = mock.epochThree;
+
         const now = moment().unix();
-        const lazyLlamasNfts = await getOwnerNfts(mock.address);
-        const numOfLazyLlamasOwned = lazyLlamasNfts.length;
-        setLazyLlamasNfts(lazyLlamasNfts);
-        setNumOfLazyLlamasOwned(numOfLazyLlamasOwned);
+        console.log("getting nfts...");
+        const numOfLazyLlamasOwned = await getUnclaimedLazyLlamaNfts();
 
-        if (now >= day3Timestamp) {
+        /**
+         * // @notice will return epoch 1
+            function epochOne() external view returns (uint, uint) {
+              return (timeOneStart, timeTwoStart);
+            }
+          // @notice will return epoch 2
+            function epochTwo() external view returns (uint, uint) {
+              return (timeTwoStart, timeThreeStart);
+            }
+          // @notice will return epoch 3
+            function epochThree() external view returns (uint, uint) {
+              return (timeThreeStart, timeThreeEnd);
+            }
+         */
+
+        if (now >= epochThree[0] && now <= epochThree[1]) {
           await setDay3State(numOfLazyLlamasOwned);
-        } else if (now >= day2Timestamp) {
+        } else if (now >= epochTwo[0] && now <= epochTwo[1]) {
           await setDay2State();
-        } else if (now >= day1Timestamp) {
+        } else if (now >= epochOne[0] && now <= epochOne[1]) {
           await setDay1State(numOfLazyLlamasOwned);
+        } else if (now >= epochThree[1]) {
+          //public mint?
         }
       }
     } catch (e) {
@@ -106,6 +131,26 @@ const MintSection = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const getUnclaimedLazyLlamaNfts = async () => {
+    // const lazyLlamasNfts = await getOwnerNfts(address);
+    const unclaimedLazyLlamaNfts = [];
+    const lazyLlamasNfts = await getOwnerNfts(mock.address);
+
+    for (let lazyLlamaNft of lazyLlamasNfts) {
+      const tokenId = lazyLlamaNft?.id?.tokenId;
+      const claimed = await mintContract.methods.isClaimed(tokenId).call();
+      if (claimed) return;
+      unclaimedLazyLlamaNfts.push(lazyLlamaNft);
+    }
+
+    console.log(unclaimedLazyLlamaNfts);
+    const numOfLazyLlamasOwned = unclaimedLazyLlamaNfts.length;
+    setLazyLlamasNfts(unclaimedLazyLlamaNfts);
+    setNumOfLazyLlamasOwned(numOfLazyLlamasOwned);
+
+    return numOfLazyLlamasOwned;
   };
 
   const setDay1State = async (numOfLazyLlamasOwned) => {
@@ -161,7 +206,7 @@ const MintSection = () => {
       .myWhitelistStatus(account)
       .call();
 
-    if (myWhitelistStatus) {
+    if (true) {
       const minterFeesThreePlusOrWL = await mintContract.methods
         .minterFeesThreePlusOrWL()
         .call();
@@ -226,70 +271,76 @@ const MintSection = () => {
   };
 
   const onMint = async () => {
+    setIsTransactionModalOpen(true);
+
     let tx = {
       from: account,
-      data: "",
       to: mintContract._address,
       value: price * mintCount,
     };
 
     const tokenIds = getTokenIdsFromNFTList();
 
-    try {
-      if (isDay3) {
-        /**
-         * Wednesday April 27th
-          • - 1 or 2 LBL In Wallet:0.2 ETH mint. (1 max per wallet)
-        */
-        tx.data = mintContract.methods.publicMintOneToOne(tokenIds).encodeABI();
-      } else if (isDay2) {
-        /**
-         * Tuesday April 26th
-          • - Whitelist Mint: 0.15 ETH mint. (1 max per wallet)
-        */
-        tx.data = mintContract.methods.whitelistMint().encodeABI();
-      } else if (isDay1) {
-        /**
-         * Monday April 25th
-          • - 5+ llamas @ 0.1 ETH per mint. Can mint according to how many multiples of 5.
-          • - 3 or 4 LBL = 0.15 ETH mint. (1 max per wallet)
-        */
-        if (numOfLazyLlamasOwned === 3 || numOfLazyLlamasOwned === 4) {
-          tx.data = mintContract.methods
-            .publicMintThreeToOne(tokenIds)
-            .encodeABI();
-        } else if (numOfLazyLlamasOwned >= 5) {
-          tx.data = mintContract.methods
-            .publicMintFiveToOne(tokenIds)
-            .encodeABI();
-        }
+    if (isDay3) {
+      /**
+       * Wednesday April 27th
+        • - 1 or 2 LBL In Wallet:0.2 ETH mint. (1 max per wallet)
+      */
+      tx.data = mintContract.methods.publicMintOneToOne(tokenIds).encodeABI();
+    } else if (isDay2) {
+      /**
+       * Tuesday April 26th
+        • - Whitelist Mint: 0.15 ETH mint. (1 max per wallet)
+      */
+      tx.data = mintContract.methods.whitelistMint().encodeABI();
+    } else if (isDay1) {
+      console.log("isDay1", numOfLazyLlamasOwned);
+      /**
+       * Monday April 25th
+        • - 5+ llamas @ 0.1 ETH per mint. Can mint according to how many multiples of 5.
+        • - 3 or 4 LBL = 0.15 ETH mint. (1 max per wallet)
+      */
+      if (numOfLazyLlamasOwned === 3 || numOfLazyLlamasOwned === 4) {
+        tx.data = mintContract.methods
+          .publicMintThreeToOne(tokenIds)
+          .encodeABI();
+      } else if (numOfLazyLlamasOwned >= 5) {
+        tx.data = mintContract.methods
+          .publicMintFiveToOne(tokenIds)
+          .encodeABI();
       }
+    }
 
-      console.log(tx);
-      // await web3.eth
-      //   .sendTransaction(tx)
-      //   .once("transactionHash", () => {
-      //     setTransactionStatus(TRANSACTION_STATUS.IN_PROGRESS);
-      //   })
-      //   .once("confirmation", (_confirmationNumber, receipt) => {
-      //     if (receipt && receipt.status === true) {
-      //       setTransactionStatus(TRANSACTION_STATUS.SUCCESS);
-      //       refreshMinted();
-      //     }
-      //     setTimeout(() => {
-      //       setIsOpen(false);
-      //       setTransactionStatus(0);
-      //     }, 2000);
-      //   })
-      //   .once("error", () => {
-      //     setTransactionStatus(TRANSACTION_STATUS.FAILED);
-      //     setTimeout(() => {
-      //       setIsOpen(false);
-      //       setTransactionStatus(0);
-      //     }, 2000);
-      //   });
+    onTrackTransaction(tx);
+  };
+
+  const onTrackTransaction = async (tx) => {
+    try {
+      await web3.eth
+        .sendTransaction(tx)
+        .once("transactionHash", () => {
+          setTransactionStatus(TRANSACTION_STATUS.IN_PROGRESS);
+        })
+        .once("confirmation", (_confirmationNumber, receipt) => {
+          if (receipt && receipt.status === true) {
+            setTransactionStatus(TRANSACTION_STATUS.SUCCESS);
+            refreshMinted();
+          }
+          setTimeout(() => {
+            setIsTransactionModalOpen(false);
+            setTransactionStatus(0);
+          }, 2000);
+        })
+        .once("error", () => {
+          setTransactionStatus(TRANSACTION_STATUS.FAILED);
+          setTimeout(() => {
+            setIsTransactionModalOpen(false);
+            setTransactionStatus(0);
+          }, 2000);
+        });
     } catch (e) {
       console.error(e.message);
+      setTransactionStatus(TRANSACTION_STATUS.FAILED);
     }
   };
 
