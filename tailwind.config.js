@@ -29,6 +29,7 @@ module.exports = {
       colors: {
         connected: "#84DCCF",
         lightPurple: "#AEB0D5",
+        hoverBlue: "#3F4A99",
       },
     },
   },

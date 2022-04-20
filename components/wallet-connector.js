@@ -67,7 +67,7 @@ const WalletConnector = () => {
             : name}
         </span>
       ) : (
-        <span className="py-2 px-6 border-2 border-white rounded-full">
+        <span className="py-2 px-6 border-2 border-white rounded-full hover:bg-hoverBlue hover:border-hoverBlue">
           Connect Wallet
         </span>
       )}

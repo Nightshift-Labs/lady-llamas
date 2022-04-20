@@ -396,7 +396,7 @@ const MintSection = () => {
             />
           </div>
           <button
-            className="px-20 py-3 font-bold bg-white text-xl text-[#3F4A99] rounded-full"
+            className="px-20 py-3 font-bold bg-white text-xl text-[#3F4A99] rounded-full hover:bg-hoverBlue hover:text-white"
             onClick={() => onMint()}
           >
             Mint
@@ -409,7 +409,7 @@ const MintSection = () => {
   const ConnectWalletButton = () => {
     return (
       <button
-        className="mt-7 py-2 px-6 border-2 border-white rounded-full font-bold text-lg"
+        className="mt-7 py-2 px-6 border-2 border-white rounded-full font-bold text-lg hover:bg-hoverBlue hover:border-hoverBlue"
         type="button"
         onClick={() => setIsOpen(true)}
       >
@@ -437,12 +437,13 @@ const MintSection = () => {
         <div className="grid grid-cols-2 h-full lg:grid-cols-1">
           <div className="h-full w-full">
             <ReactCompareImage
+              container={{ height: "100%" }}
               leftImage="/images/slide-left-min.png"
               rightImage="/images/slide-right-min.png"
               handle={<DragHandle />}
             />
           </div>
-          <div className="flex flex-col justify-between pt-12 px-12 md:px-[20px] lg:pb-12">
+          <div className="flex flex-col justify-between pt-12 px-12 md:px-[20px] lg:pb-12 sm:mt-[-100px] sm:z-10">
             <div></div>
             <div className="max-w-2xl">
               <div>
@@ -494,7 +495,7 @@ const MintSection = () => {
                 )}
               </div>
             </div>
-            <nav className="flex h-16 lg:hidden max-w-3xl">
+            <nav className="flex h-16 lg:hidden max-w-3xl pb-4">
               <div className="flex justify-between w-full">
                 <div>
                   <Link href="/">

@@ -34,7 +34,6 @@ body {
   color: #ffff;
   font-family: VisbyCF, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  
 }
 
 a {
@@ -59,15 +58,6 @@ a {
   }
 }
 
-
-body {
-  /* background-image: url("/images/background-grad.svg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: bottom; */
-  height: 100vh;
-}
-
 .outline-title {
   color: rgba(0, 0, 0, 0);
   -webkit-text-stroke: 2px #AEB0D5;
@@ -85,3 +75,8 @@ body {
   background-position: center;
 }
 
+
+/* background-image: url("/images/background-grad.svg");
+background-size: cover;
+background-position: bottom;
+height:100%; */

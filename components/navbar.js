@@ -8,7 +8,7 @@ const Navbar = () => {
   return (
     <nav className="absolute inset-x-0 top-0 h-16 z-10">
       <div className="container flex justify-between items-center w-full">
-        <div className="py-7">
+        <div className="py-7 md:py-3">
           <Link href="/">
             <a title="Lady Llamas">
               <Image
@@ -27,7 +27,7 @@ const Navbar = () => {
               <WalletConnector />
             </li>
           </div>
-          <div className="lg:hidden xl:hidden 2xl:hidden flex flex-row items-center space-x-3">
+          <div className="lg:hidden xl:hidden 2xl:hidden md:flex flex flex-row items-center space-x-3">
             <li>
               <a
                 href={process.env.OPENSEA_LINK}
