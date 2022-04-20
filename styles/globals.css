@@ -69,7 +69,7 @@ a {
 
 .modal {
   height: 100%;
-  background-image: url("/images/Minting Progress Modal.png");
+  background-image: url("/minting-progress-modal.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
