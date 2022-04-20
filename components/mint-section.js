@@ -372,8 +372,8 @@ const MintSection = () => {
 
     return (
       <>
-        <div className="flex flex-row mt-7">
-          <div className="flex flex-row justify-items-stretch border-2 border-white rounded-full mr-8 items center">
+        <div className="flex flex-row mt-7 sm:flex-col ">
+          <div className="flex flex-row justify-items-stretch border-2 border-white rounded-full mr-8 items center sm:h-14 sm:mr-0 sm:mb-6">
             <input
               className="text-center w-4/12 cursor-pointer"
               type="button"
@@ -431,27 +431,29 @@ const MintSection = () => {
   // mint view
   return (
     <>
-      <section className="h-screen">
-        <div className="grid lg:grid-cols-2 h-full 2xl:container">
-          <div className="min-h-fit w-full self-center">
+      <section className="lg:h-auto h-screen">
+        <div className="grid grid-cols-2 h-full lg:grid-cols-1">
+          <div className="h-full w-full">
             <ReactCompareImage
-              leftImage="/lady-llama-left.jpg"
-              rightImage="/lady-llama-right.jpg"
+              leftImage="/images/slide-left-min.png"
+              rightImage="/images/slide-right-min.png"
               handle={<DragHandle />}
             />
           </div>
-          <div className="flex flex-col self-center py-12 px-12 max-w-2xl">
-            <h1 className="font-sans font-black text-7xl leading-7 text-lightPurple">
-              <span className="outline-title"> MINT YOUR </span>LADY
-              <Image
-                className=""
-                src="/images/Lady-LLamas.gif"
-                alt="Lady-LLamas"
-                width="70"
-                height="79"
-              />
-              LLAMA
-            </h1>
+          <div className="flex flex-col self-center p-12 max-w-2xl md:px-[20px] ">
+            <div className="xl:max-w-md">
+              <h1 className="font-sans font-black text-7xl leading-7 text-lightPurple">
+                <span className="outline-title"> MINT YOUR </span>LADY
+                <Image
+                  className=""
+                  src="/images/Lady-LLamas.gif"
+                  alt="Lady-LLamas"
+                  width="70"
+                  height="79"
+                />
+                LLAMA
+              </h1>
+            </div>
             <div className="my-5 h-2 w-full bg-gradient-to-r from-lightPurple"></div>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
@@ -463,8 +465,10 @@ const MintSection = () => {
               {active && mintActive && (
                 <>
                   <div className="flex flex-row items-center mb-10">
-                    <p className="mr-4">{dailyMintPriceText}</p>
-                    <p className="font-serif bg-[#353C7C] rounded-sm py-2 px-4">
+                    <p className="mr-4 md:mr-3 md:text-sm">
+                      {dailyMintPriceText}
+                    </p>
+                    <p className="font-serif bg-[#353C7C] rounded-sm py-2 px-4 md:text-sm">
                       MINT Price: {getPrice()} ETH
                     </p>
                   </div>

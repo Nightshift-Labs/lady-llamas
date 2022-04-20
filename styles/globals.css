@@ -61,11 +61,10 @@ a {
 
 
 body {
-  background-image: url("/images/background-grad.svg");
+  /* background-image: url("/images/background-grad.svg");
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: bottom;
-  line-height: 20px;
+  background-position: bottom; */
   height: 100vh;
 }
 
@@ -85,3 +84,4 @@ body {
   background-repeat: no-repeat;
   background-position: center;
 }
+

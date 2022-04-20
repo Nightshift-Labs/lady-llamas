@@ -4,7 +4,7 @@ import { Discord, Twitter, OpenSea } from "./icons";
 
 const Footer = () => {
   return (
-    <nav className="absolute inset-x-0 bottom-0 h-16 z-10">
+    <nav className="absolute inset-x-0 bottom-0 h-16 z-10 lg:hidden">
       <div className="container flex justify-between items-center w-full">
         <div>
           <Link href="/">

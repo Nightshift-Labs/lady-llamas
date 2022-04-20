@@ -22,12 +22,12 @@ const Navbar = () => {
           </Link>
         </div>
         <ul>
-          <div className="sm:hidden md:hidden lg:block">
+          <div className="sm:hidden md:hidden">
             <li>
               <WalletConnector />
             </li>
           </div>
-          <div className="lg:hidden flex flex-row items-center space-x-3">
+          <div className="lg:hidden xl:hidden 2xl:hidden flex flex-row items-center space-x-3">
             <li>
               <a
                 href={process.env.OPENSEA_LINK}
