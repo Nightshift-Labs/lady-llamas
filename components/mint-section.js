@@ -450,7 +450,6 @@ const MintSection = () => {
                 <h1 className="font-sans font-black text-[5.5vw] xl:leading-[3.5vw] 2xl:text-8xl  2xl:leading-[4rem] text-lightPurple lg:text-[100px] lg:leading-[5rem] md:text-[85px] md:leading-[3rem] sm:text-8xl sm:leading-[75px] sm:max-w-sm">
                   <span className="outline-title"> MINT YOUR </span>LADY
                   <Image
-                    className=""
                     src="/lady-llamas.gif"
                     alt="Lady-LLamas"
                     width="70"
