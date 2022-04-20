@@ -53,7 +53,7 @@ a {
   margin-right: auto;
 }
 
-@media screen and (max-width: 976px) {
+@media screen and (max-width: 1023px) {
   .container {
     padding: 0 20px;
   }

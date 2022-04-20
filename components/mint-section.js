@@ -442,115 +442,118 @@ const MintSection = () => {
               handle={<DragHandle />}
             />
           </div>
-          <div className="flex flex-col self-center p-12 max-w-2xl md:px-[20px] ">
-            <div className="xl:max-w-md">
-              <h1 className="font-sans font-black text-7xl leading-7 text-lightPurple">
-                <span className="outline-title"> MINT YOUR </span>LADY
-                <Image
-                  className=""
-                  src="/images/lady-llamas.gif"
-                  alt="Lady-LLamas"
-                  width="70"
-                  height="79"
-                />
-                LLAMA
-              </h1>
+          <div className="flex flex-col justify-between pt-12 px-12 md:px-[20px] lg:pb-12">
+            <div></div>
+            <div className="max-w-2xl">
+              <div>
+                <h1 className="font-sans font-black text-[5.5vw] xl:leading-[3.5vw] 2xl:text-8xl  2xl:leading-[4rem] text-lightPurple">
+                  <span className="outline-title"> MINT YOUR </span>LADY
+                  <Image
+                    className=""
+                    src="/images/lady-llamas.gif"
+                    alt="Lady-LLamas"
+                    width="70"
+                    height="79"
+                  />
+                  LLAMA
+                </h1>
+              </div>
+              <div className="my-5 h-2 w-full bg-gradient-to-r from-lightPurple"></div>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+                quis egestas ex. Aliquam erat volutpat. Phasellus luctus, sapien
+                et ornare efficitur, est lorem varius purus, in congue orci nisi
+                nec dolor.
+              </p>
+              <div className="mt-8">
+                {active && mintActive && (
+                  <>
+                    <div className="flex flex-row items-center mb-10">
+                      <p className="mr-4 md:mr-3 md:text-sm">
+                        {dailyMintPriceText}
+                      </p>
+                      <p className="font-serif bg-[#353C7C] rounded-sm py-2 px-4 md:text-sm">
+                        MINT Price: {getPrice()} ETH
+                      </p>
+                    </div>
+                  </>
+                )}
+                {loading && <h1>Loading...</h1>}
+                {walletIsNotConnected() && (
+                  <>
+                    <MintTracker />
+                    <ConnectWalletButton />
+                  </>
+                )}
+                {walletIsConnected() && (
+                  <>
+                    <MintTracker />
+                    <MintButton />
+                    {!mintActive && <h1>Mint is not active.</h1>}
+                  </>
+                )}
+              </div>
             </div>
-            <div className="my-5 h-2 w-full bg-gradient-to-r from-lightPurple"></div>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-              quis egestas ex. Aliquam erat volutpat. Phasellus luctus, sapien
-              et ornare efficitur, est lorem varius purus, in congue orci nisi
-              nec dolor.
-            </p>
-            <div className="mt-8">
-              {active && mintActive && (
-                <>
-                  <div className="flex flex-row items-center mb-10">
-                    <p className="mr-4 md:mr-3 md:text-sm">
-                      {dailyMintPriceText}
-                    </p>
-                    <p className="font-serif bg-[#353C7C] rounded-sm py-2 px-4 md:text-sm">
-                      MINT Price: {getPrice()} ETH
-                    </p>
-                  </div>
-                </>
-              )}
-              {loading && <h1>Loading...</h1>}
-              {walletIsNotConnected() && (
-                <>
-                  <MintTracker />
-                  <ConnectWalletButton />
-                </>
-              )}
-              {walletIsConnected() && (
-                <>
-                  <MintTracker />
-                  <MintButton />
-                  {!mintActive && <h1>Mint is not active.</h1>}
-                </>
-              )}
-            </div>
+            <nav className="flex h-16 lg:hidden max-w-3xl">
+              <div className="flex justify-between w-full">
+                <div>
+                  <Link href="/">
+                    <a title=""></a>
+                  </Link>
+                </div>
+                <ul className=" flex flex-row items-center space-x-8">
+                  <li>
+                    <a
+                      className="flex flex-row text-lightPurple font-bold text-sm"
+                      href={process.env.OPENSEA_LINK}
+                      title="View on OpenSea"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <OpenSea />
+                      OPENSEA
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="flex flex-row text-lightPurple font-bold text-sm"
+                      href=""
+                      title="Follow Twitter"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Twitter />
+                      TWITTER
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="flex flex-row text-lightPurple font-bold text-sm"
+                      href=""
+                      title="Join Discord"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Discord />
+                      DISCORD
+                    </a>
+                  </li>
+                  <li className="text-lightPurple font-bold text-sm">
+                    <a
+                      href=""
+                      title="Contract"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    />
+                    CONTRACT
+                  </li>
+                </ul>
+              </div>
+            </nav>
           </div>
         </div>
-
-        <nav className="absolute inset-x-0 bottom-0 h-16 z-10 lg:hidden">
-          <div className="container flex justify-between items-center w-full">
-            <div>
-              <Link href="/">
-                <a title=""></a>
-              </Link>
-            </div>
-            <ul className=" flex flex-row items-center space-x-8">
-              <li>
-                <a
-                  className="flex flex-row text-lightPurple font-bold text-sm"
-                  href={process.env.OPENSEA_LINK}
-                  title="View on OpenSea"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <OpenSea />
-                  OPENSEA
-                </a>
-              </li>
-              <li>
-                <a
-                  className="flex flex-row text-lightPurple font-bold text-sm"
-                  href=""
-                  title="Follow Twitter"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Twitter />
-                  TWITTER
-                </a>
-              </li>
-              <li>
-                <a
-                  className="flex flex-row text-lightPurple font-bold text-sm"
-                  href=""
-                  title="Join Discord"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Discord />
-                  DISCORD
-                </a>
-              </li>
-              <li className="text-lightPurple font-bold text-sm">
-                <a
-                  href=""
-                  title="Contract"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                />
-                CONTRACT
-              </li>
-            </ul>
-          </div>
-        </nav>
       </section>
+
       <TransactionModal
         isOpen={isTransactionModalOpen}
         closeModal={closeTransactionModal}
