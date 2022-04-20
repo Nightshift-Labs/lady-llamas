@@ -8,7 +8,7 @@ const Navbar = () => {
   return (
     <nav className="absolute inset-x-0 top-0 h-16 z-10">
       <div className="container flex justify-between items-center w-full">
-        <div className="py-7 md:py-3">
+        <div className="py-7 md:py-3 sm:w-40">
           <Link href="/">
             <a title="Lady Llamas">
               <Image
