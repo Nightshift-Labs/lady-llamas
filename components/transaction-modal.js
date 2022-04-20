@@ -6,7 +6,7 @@ const customStyles = {
   content: {
     width: "90%",
     maxWidth: "550px",
-    height: "300px",
+    height: "350px",
     border: "none",
     padding: "0",
     top: "50%",
@@ -17,6 +17,10 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     background: "transparent",
   },
+
+  overlay: {
+    background: "rgb(14, 16, 62, 0.8)",
+  },
 };
 
 Modal.setAppElement("body");
@@ -26,21 +30,19 @@ const TransactionModal = ({ isOpen, closeModal, transactionStatus }) => {
     switch (transactionStatus) {
       case TRANSACTION_STATUS.IN_PROGRESS:
         return (
-          <div className="text-2xl font-bold text-center md:text-xl">
-            MINTING IN PROGRESS
+          <div className="flex flex-col text-5xl font-black text-center pb-8">
+            <span className="outline-title">MINTING YOUR</span> LADY LLAMA
           </div>
         );
       case TRANSACTION_STATUS.SUCCESS:
         return (
-          <div className="text-2xl font-bold text-center md:text-xl">
+          <div className="text-5xl font-black text-center">
             MINTING COMPLETE
           </div>
         );
       case TRANSACTION_STATUS.FAILED:
         return (
-          <div className="text-2xl font-bold text-center md:text-xl">
-            MINTING FAILED
-          </div>
+          <div className="text-5xl font-black text-center">MINTING FAILED</div>
         );
     }
   };
