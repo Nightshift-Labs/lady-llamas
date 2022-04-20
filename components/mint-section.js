@@ -30,7 +30,7 @@ const MintSection = () => {
   const { mintContract, web3 } = useMintContract();
   const { account, active, chainId } = useWeb3React();
   const { setIsOpen } = useContext(WalletModalContext);
-  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(true);
+  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
   const [transactionStatus, setTransactionStatus] = useState(0);
   const [lazyLlamasNfts, setLazyLlamasNfts] = useState([]);
   const [numOfLazyLlamasOwned, setNumOfLazyLlamasOwned] = useState(0);
@@ -418,9 +418,11 @@ const MintSection = () => {
 
   const DragHandle = () => {
     return (
-      <div style={{ color: "white" }}>
+      <div className="flex flex-row items-center">
         <FaChevronLeft />
-        <p style={{ fontSize: 25, fontWeight: "bold" }}>DRAG</p>
+        <p className="flex items-center pl-[10px] font-serif border-2 border-white rounded-full h-16 w-16">
+          DRAG
+        </p>
         <FaChevronRight />
       </div>
     );

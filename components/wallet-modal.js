@@ -108,8 +108,9 @@ const WalletModal = ({}) => {
           </div>
         </button>{" "}
       </div>
-      <div className="font-bold text-md text-center mx-auto py-2 mt-6 w-1/2 border-2 border-[#AEB0D5] rounded-full">
+      <div className="flex flex-row">
         <button
+          className="font-bold text-md text-center mx-auto py-2 mt-6 w-1/2 border-2 border-[#AEB0D5] rounded-full"
           onClick={() => {
             closeModal();
           }}
