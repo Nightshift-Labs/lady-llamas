@@ -451,7 +451,7 @@ const MintSection = () => {
                   <span className="outline-title"> MINT YOUR </span>LADY
                   <Image
                     className=""
-                    src="/images/lady-llamas.gif"
+                    src="/lady-llamas.gif"
                     alt="Lady-LLamas"
                     width="70"
                     height="79"
