@@ -485,8 +485,9 @@ const MintSection = () => {
   return (
     <>
       <section className="lg:h-auto h-screen">
+        <div className="w-full h-full bg-cover fixed bg-no-repeat bg-[url('/background-grad.svg')] -z-1 lg:hidden"></div>
         <div className="grid grid-cols-2 h-full lg:grid-cols-1">
-          <div className="h-full w-full relative">
+          <div className="h-full w-full relative max-w-5xl ml-auto">
             <div className="w-full h-[120px] absolute bottom-0 left-0 z-[1] bg-gradient-to-t from-[#0F1140] xl:hidden 2xl:hidden lg:block"></div>
             <ReactCompareImage
               leftImage="/slide-left-min.png"
@@ -494,14 +495,14 @@ const MintSection = () => {
               handle={<DragHandle />}
             />
           </div>
-          <div className="flex flex-col justify-between pt-12 px-12 md:px-[20px] lg:pb-12 sm:mt-[-100px] sm:z-[2]">
+          <div className="flex flex-col justify-between z-[1] pt-12 px-12 md:px-[20px] lg:pb-12 sm:mt-[-100px] sm:z-[2]">
             <div></div>
             <div className="max-w-2xl">
               <div>
                 <h1 className="font-sans font-black text-[5.5vw] xl:leading-[3.5vw] 2xl:text-8xl  2xl:leading-[4rem] text-lightPurple lg:text-[100px] lg:leading-[5rem] md:text-[85px] md:leading-[3rem] sm:text-8xl sm:leading-[75px] sm:max-w-sm">
                   <span className="outline-title"> MINT YOUR </span>LADY
                   <Image
-                    src="/lady-llamas.gif"
+                    src="/llama-switch.gif"
                     alt="Lady-LLamas"
                     width="70"
                     height="79"
