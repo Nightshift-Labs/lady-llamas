@@ -92,6 +92,14 @@ const MintSection = () => {
         const epochOne = await mintContract.methods.epochOne().call();
         const epochTwo = await mintContract.methods.epochTwo().call();
         const epochThree = await mintContract.methods.epochThree().call();
+        console.log(
+          "epochOne",
+          epochOne,
+          "epochTwo",
+          epochTwo,
+          "epochThree",
+          epochThree
+        );
 
         // const epochOne = mock.epochOne;
         // const epochTwo = mock.epochTwo;
@@ -134,7 +142,7 @@ const MintSection = () => {
   };
 
   const getUnclaimedLazyLlamaNfts = async () => {
-    const lazyLlamasNfts = await getOwnerNfts(address);
+    const lazyLlamasNfts = await getOwnerNfts(account);
     const unclaimedLazyLlamaNfts = [];
     // const lazyLlamasNfts = await getOwnerNfts(mock.address);
 
