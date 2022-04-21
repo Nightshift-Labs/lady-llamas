@@ -487,7 +487,7 @@ const MintSection = () => {
       <section className="lg:h-auto h-screen">
         <div className="w-full h-full bg-cover fixed bg-no-repeat bg-[url('/background-grad.svg')] -z-1 lg:hidden"></div>
         <div className="grid grid-cols-2 h-full lg:grid-cols-1">
-          <div className="h-full w-full relative max-w-5xl ml-auto">
+          <div className="h-full w-full relative max-w-6xl ml-auto">
             <div className="w-full h-[120px] absolute bottom-0 left-0 z-[1] bg-gradient-to-t from-[#0F1140] xl:hidden 2xl:hidden lg:block"></div>
             <ReactCompareImage
               leftImage="/slide-left-min.png"
