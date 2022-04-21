@@ -42,7 +42,7 @@ const MintSection = () => {
   const { mintContract, web3 } = useMintContract();
   const { account, active, chainId } = useWeb3React();
   const { setIsOpen } = useContext(WalletModalContext);
-  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
+  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(true);
   const [transactionStatus, setTransactionStatus] = useState(0);
   const [lazyLlamasNfts, setLazyLlamasNfts] = useState([]);
   const [numOfLazyLlamasOwned, setNumOfLazyLlamasOwned] = useState(0);
@@ -487,14 +487,14 @@ const MintSection = () => {
       <section className="lg:h-auto h-screen">
         <div className="grid grid-cols-2 h-full lg:grid-cols-1">
           <div className="h-full w-full relative">
-            <div className="w-full h-[120px] absolute bottom-0 left-0 z-[100000] bg-gradient-to-t from-[#0F1140] xl:hidden 2xl:hidden lg:block"></div>
+            <div className="w-full h-[120px] absolute bottom-0 left-0 z-[1] bg-gradient-to-t from-[#0F1140] xl:hidden 2xl:hidden lg:block"></div>
             <ReactCompareImage
               leftImage="/slide-left-min.png"
               rightImage="/slide-right-min.png"
               handle={<DragHandle />}
             />
           </div>
-          <div className="flex flex-col justify-between pt-12 px-12 md:px-[20px] lg:pb-12 sm:mt-[-100px] sm:z-[100001]">
+          <div className="flex flex-col justify-between pt-12 px-12 md:px-[20px] lg:pb-12 sm:mt-[-100px] sm:z-[2]">
             <div></div>
             <div className="max-w-2xl">
               <div>

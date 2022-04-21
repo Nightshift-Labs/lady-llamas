@@ -20,6 +20,7 @@ const customStyles = {
 
   overlay: {
     background: "rgb(14, 16, 62, 0.8)",
+    zIndex: "5",
   },
 };
 
@@ -30,19 +31,21 @@ const TransactionModal = ({ isOpen, closeModal, transactionStatus }) => {
     switch (transactionStatus) {
       case TRANSACTION_STATUS.IN_PROGRESS:
         return (
-          <div className="flex flex-col text-5xl font-black text-center pb-8">
+          <div className="flex flex-col text-5xl font-black text-center pb-8 md:text-4xl md:pb-1">
             <span className="outline-title">MINTING YOUR</span> LADY LLAMA
           </div>
         );
       case TRANSACTION_STATUS.SUCCESS:
         return (
-          <div className="text-5xl font-black text-center">
+          <div className="text-5xl font-black text-center md:text-3xl">
             MINTING COMPLETE
           </div>
         );
       case TRANSACTION_STATUS.FAILED:
         return (
-          <div className="text-5xl font-black text-center">MINTING FAILED</div>
+          <div className="text-5xl font-black text-center md:text-3xl ">
+            MINTING FAILED
+          </div>
         );
     }
   };

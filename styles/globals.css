@@ -75,3 +75,20 @@ a {
   background-position: center;
 }
 
+.success-image {
+  width: 50px;
+  height: 50px;
+  background-image: url("/images/complete.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.error-image {
+  width: 50px;
+  height: 50px;
+  background-image: url("/images/error.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
