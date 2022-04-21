@@ -42,7 +42,7 @@ const MintSection = () => {
   const { mintContract, web3 } = useMintContract();
   const { account, active, chainId } = useWeb3React();
   const { setIsOpen } = useContext(WalletModalContext);
-  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(true);
+  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
   const [transactionStatus, setTransactionStatus] = useState(0);
   const [lazyLlamasNfts, setLazyLlamasNfts] = useState([]);
   const [numOfLazyLlamasOwned, setNumOfLazyLlamasOwned] = useState(0);
