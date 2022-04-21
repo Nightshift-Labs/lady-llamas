@@ -36,7 +36,7 @@ const mock = {
   ],
 };
 
-console.log(mock);
+// console.log(mock);
 
 const MintSection = () => {
   const { mintContract, web3 } = useMintContract();
@@ -89,13 +89,13 @@ const MintSection = () => {
         setMinterMaximumCapacity(minterMaximumCapacity);
         setTotalSupply(totalSupply);
 
-        // const epochOne = await mintContract.methods.epochOne().call();
-        // const epochTwo = await mintContract.methods.epochTwo().call();
-        // const epochThree = await mintContract.methods.epochThree().call();
+        const epochOne = await mintContract.methods.epochOne().call();
+        const epochTwo = await mintContract.methods.epochTwo().call();
+        const epochThree = await mintContract.methods.epochThree().call();
 
-        const epochOne = mock.epochOne;
-        const epochTwo = mock.epochTwo;
-        const epochThree = mock.epochThree;
+        // const epochOne = mock.epochOne;
+        // const epochTwo = mock.epochTwo;
+        // const epochThree = mock.epochThree;
 
         const now = moment().unix();
         console.log("getting nfts...");
@@ -134,9 +134,9 @@ const MintSection = () => {
   };
 
   const getUnclaimedLazyLlamaNfts = async () => {
-    // const lazyLlamasNfts = await getOwnerNfts(address);
+    const lazyLlamasNfts = await getOwnerNfts(address);
     const unclaimedLazyLlamaNfts = [];
-    const lazyLlamasNfts = await getOwnerNfts(mock.address);
+    // const lazyLlamasNfts = await getOwnerNfts(mock.address);
 
     for (let lazyLlamaNft of lazyLlamasNfts) {
       const tokenId = lazyLlamaNft?.id?.tokenId;
