@@ -520,10 +520,9 @@ const MintSection = () => {
               </div>
               <div className="my-5 h-2 w-full bg-gradient-to-r from-lightPurple"></div>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                quis egestas ex. Aliquam erat volutpat. Phasellus luctus, sapien
-                et ornare efficitur, est lorem varius purus, in congue orci nisi
-                nec dolor.
+                The 3000 Lady Llamas have arrived. Dressed for the occasion and
+                ready to graze with the herd in the metaverse and beyond. Laid
+                Back Llamas, meet the queens of Llama Land.
               </p>
               <div className="mt-8">
                 {active && mintActive && (
@@ -577,7 +576,7 @@ const MintSection = () => {
                   <li>
                     <a
                       className="flex flex-row text-lightPurple font-bold text-sm"
-                      href=""
+                      href="https://twitter.com/LaidBackLlamas"
                       title="Follow Twitter"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -589,7 +588,7 @@ const MintSection = () => {
                   <li>
                     <a
                       className="flex flex-row text-lightPurple font-bold text-sm"
-                      href=""
+                      href="https://discord.com/invite/laidbackllamas"
                       title="Join Discord"
                       target="_blank"
                       rel="noopener noreferrer"
