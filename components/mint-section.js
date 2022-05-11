@@ -19,25 +19,6 @@ const TransactionModal = dynamic(() =>
   import("../components/transaction-modal")
 );
 
-//mock values
-const mock = {
-  address: "0xc06Ff3aC0C1f3CE73966cD8Bf8AF867559992CFc",
-  epochOne: [
-    moment().subtract(5, "minutes").unix(),
-    moment().subtract(5, "minutes").unix(),
-  ],
-  epochTwo: [
-    moment().subtract(7, "minutes").unix(),
-    moment().subtract(7, "minutes").unix(),
-  ],
-  epochThree: [
-    moment().subtract(10, "minutes").unix(),
-    moment().add(10, "minutes").unix(),
-  ],
-};
-
-// console.log(mock);
-
 const MintSection = () => {
   const { mintContract, web3 } = useMintContract();
   const { account, active, chainId } = useWeb3React();
@@ -60,11 +41,13 @@ const MintSection = () => {
   const [isDay1, setIsDay1] = useState(false);
   const [isDay2, setIsDay2] = useState(false);
   const [isDay3, setIsDay3] = useState(false);
+  const [isPublicMint, setIsPublicMint] = useState(false);
 
   const mintPriceText = {
     day1: "DAY 1: Llama Holders (3+)",
     day2: "DAY 2: Whitelist Sale ",
     day3: "DAY 3: Llama Holders (1-2)",
+    publicMint: "Public Mint",
   };
 
   useEffect(() => {
@@ -79,7 +62,6 @@ const MintSection = () => {
     try {
       setLoading(true);
       if (mintContract && active && account) {
-        console.log(mintContract);
         const minterMaximumCapacity = await mintContract.methods
           .minterMaximumCapacity()
           .call();
@@ -92,37 +74,9 @@ const MintSection = () => {
         const epochOne = await mintContract.methods.epochOne().call();
         const epochTwo = await mintContract.methods.epochTwo().call();
         const epochThree = await mintContract.methods.epochThree().call();
-        console.log(
-          "epochOne",
-          epochOne,
-          "epochTwo",
-          epochTwo,
-          "epochThree",
-          epochThree
-        );
-
-        // const epochOne = mock.epochOne;
-        // const epochTwo = mock.epochTwo;
-        // const epochThree = mock.epochThree;
 
         const now = moment().unix();
-        console.log("getting nfts...");
         const numOfLazyLlamasOwned = await getUnclaimedLazyLlamaNfts();
-
-        /**
-         * // @notice will return epoch 1
-            function epochOne() external view returns (uint, uint) {
-              return (timeOneStart, timeTwoStart);
-            }
-          // @notice will return epoch 2
-            function epochTwo() external view returns (uint, uint) {
-              return (timeTwoStart, timeThreeStart);
-            }
-          // @notice will return epoch 3
-            function epochThree() external view returns (uint, uint) {
-              return (timeThreeStart, timeThreeEnd);
-            }
-         */
 
         if (now >= epochThree[0] && now <= epochThree[1]) {
           await setDay3State(numOfLazyLlamasOwned);
@@ -130,8 +84,8 @@ const MintSection = () => {
           await setDay2State();
         } else if (now >= epochOne[0] && now <= epochOne[1]) {
           await setDay1State(numOfLazyLlamasOwned);
-        } else if (now >= epochThree[1]) {
-          //public mint?
+        } else if (now > epochThree[1]) {
+          await setPublicMint();
         }
       }
     } catch (e) {
@@ -144,7 +98,6 @@ const MintSection = () => {
   const getUnclaimedLazyLlamaNfts = async () => {
     const lazyLlamasNfts = await getOwnerNfts(account);
     const unclaimedLazyLlamaNfts = [];
-    // const lazyLlamasNfts = await getOwnerNfts(mock.address);
 
     for (let lazyLlamaNft of lazyLlamasNfts) {
       const tokenId = lazyLlamaNft?.id?.tokenId;
@@ -153,7 +106,6 @@ const MintSection = () => {
       unclaimedLazyLlamaNfts.push(lazyLlamaNft);
     }
 
-    console.log(unclaimedLazyLlamaNfts);
     const numOfLazyLlamasOwned = unclaimedLazyLlamaNfts.length;
     setLazyLlamasNfts(unclaimedLazyLlamaNfts);
     setNumOfLazyLlamasOwned(numOfLazyLlamasOwned);
@@ -163,7 +115,6 @@ const MintSection = () => {
 
   const setDay1State = async (numOfLazyLlamasOwned) => {
     /**
-       * Monday April 25th
         • - 5+ llamas @ 0.1 ETH per mint. Can mint according to how many multiples of 5.
         • - 3 or 4 LBL = 0.15 ETH mint. (1 max per wallet)
       */
@@ -199,7 +150,6 @@ const MintSection = () => {
 
   const setDay2State = async () => {
     /**
-     * Tuesday April 26th
       • - Whitelist Mint: 0.15 ETH mint. (1 max per wallet)
       */
 
@@ -228,7 +178,6 @@ const MintSection = () => {
 
   const setDay3State = async (numOfLazyLlamasOwned) => {
     /**
-     * Wednesday April 27th
       • - 1 or 2 LBL In Wallet:0.2 ETH mint. (1 max per wallet)
       */
     setIsDay3(true);
@@ -247,6 +196,23 @@ const MintSection = () => {
     } else {
       setEligible(false);
     }
+  };
+  const setPublicMint = async () => {
+    /**
+      • 0.2 eth (2 max per wallet)
+      */
+    setIsPublicMint(true);
+    setMintActive(true);
+    setDailyMintPriceText(mintPriceText.publicMint);
+
+    const maxPerWallet = 2;
+    setMaxPerWallet(maxPerWallet);
+
+    const minterFeesOnePlusDayThree = await mintContract.methods
+      .minterFeesOnePlusDayThree()
+      .call();
+    setPrice(minterFeesOnePlusDayThree.toString());
+    setEligible(true);
   };
 
   const getPrice = () => {
@@ -291,20 +257,16 @@ const MintSection = () => {
 
     if (isDay3) {
       /**
-       * Wednesday April 27th
         • - 1 or 2 LBL In Wallet:0.2 ETH mint. (1 max per wallet)
       */
       tx.data = mintContract.methods.publicMintOneToOne(tokenIds).encodeABI();
     } else if (isDay2) {
       /**
-       * Tuesday April 26th
         • - Whitelist Mint: 0.15 ETH mint. (1 max per wallet)
       */
       tx.data = mintContract.methods.whitelistMint().encodeABI();
     } else if (isDay1) {
-      console.log("isDay1", numOfLazyLlamasOwned);
       /**
-       * Monday April 25th
         • - 5+ llamas @ 0.1 ETH per mint. Can mint according to how many multiples of 5.
         • - 3 or 4 LBL = 0.15 ETH mint. (1 max per wallet)
       */
@@ -317,6 +279,8 @@ const MintSection = () => {
           .publicMintFiveToOne(tokenIds)
           .encodeABI();
       }
+    } else if (isPublicMint) {
+      tx.data = mintContract.methods.publicMint(mintCount).encodeABI();
     }
 
     onTrackTransaction(tx);
