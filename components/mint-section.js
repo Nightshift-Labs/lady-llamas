@@ -78,14 +78,14 @@ const MintSection = () => {
         const now = moment().unix();
         const numOfLazyLlamasOwned = await getUnclaimedLazyLlamaNfts();
 
-        if (now >= epochThree[0] && now <= epochThree[1]) {
+        if (now > epochThree[1]) {
+          await setPublicMint();
+        } else if (now >= epochThree[0] && now <= epochThree[1]) {
           await setDay3State(numOfLazyLlamasOwned);
         } else if (now >= epochTwo[0] && now <= epochTwo[1]) {
           await setDay2State();
         } else if (now >= epochOne[0] && now <= epochOne[1]) {
           await setDay1State(numOfLazyLlamasOwned);
-        } else if (now > epochThree[1]) {
-          await setPublicMint();
         }
       }
     } catch (e) {
@@ -102,7 +102,7 @@ const MintSection = () => {
     for (let lazyLlamaNft of lazyLlamasNfts) {
       const tokenId = lazyLlamaNft?.id?.tokenId;
       const claimed = await mintContract.methods.isClaimed(tokenId).call();
-      if (claimed) return;
+      if (claimed) continue;
       unclaimedLazyLlamaNfts.push(lazyLlamaNft);
     }
 
@@ -123,25 +123,25 @@ const MintSection = () => {
     setMintActive(true);
     setDailyMintPriceText(mintPriceText.day1);
 
+    //set price now so it does not show 0 when not eligible
+    const minterFeesThreePlusOrWL = await mintContract.methods
+      .minterFeesThreePlusOrWL()
+      .call();
+
+    setPrice(minterFeesThreePlusOrWL);
+
     if (numOfLazyLlamasOwned >= 5) {
       const maxPerWallet = Math.floor(numOfLazyLlamasOwned / 5);
       setMaxPerWallet(maxPerWallet);
-
       const minterFeesFivePlus = await mintContract.methods
         .minterFeesFivePlus()
         .call();
 
       setPrice(minterFeesFivePlus);
       setEligible(true);
-    } else if (numOfLazyLlamasOwned === 3 || numOfLazyLlamasOwned === 4) {
+    } else if (numOfLazyLlamasOwned >= 3 && numOfLazyLlamasOwned < 5) {
       const maxPerWallet = 1;
       setMaxPerWallet(maxPerWallet);
-
-      const minterFeesThreePlusOrWL = await mintContract.methods
-        .minterFeesThreePlusOrWL()
-        .call();
-
-      setPrice(minterFeesThreePlusOrWL);
       setEligible(true);
     } else {
       setEligible(false);
@@ -160,16 +160,17 @@ const MintSection = () => {
     const maxPerWallet = 1;
     setMaxPerWallet(maxPerWallet);
 
+    const minterFeesThreePlusOrWL = await mintContract.methods
+      .minterFeesThreePlusOrWL()
+      .call();
+
+    setPrice(minterFeesThreePlusOrWL);
+
     const myWhitelistStatus = await mintContract.methods
       .myWhitelistStatus(account)
       .call();
 
-    if (true) {
-      const minterFeesThreePlusOrWL = await mintContract.methods
-        .minterFeesThreePlusOrWL()
-        .call();
-
-      setPrice(minterFeesThreePlusOrWL);
+    if (myWhitelistStatus) {
       setEligible(true);
     } else {
       setEligible(false);
@@ -187,16 +188,19 @@ const MintSection = () => {
     const maxPerWallet = 1;
     setMaxPerWallet(maxPerWallet);
 
+    const minterFeesOnePlusDayThree = await mintContract.methods
+      .minterFeesOnePlusDayThree()
+      .call();
+
+    setPrice(minterFeesOnePlusDayThree.toString());
+
     if (numOfLazyLlamasOwned >= 1) {
-      const minterFeesOnePlusDayThree = await mintContract.methods
-        .minterFeesOnePlusDayThree()
-        .call();
-      setPrice(minterFeesOnePlusDayThree.toString());
       setEligible(true);
     } else {
       setEligible(false);
     }
   };
+
   const setPublicMint = async () => {
     /**
       • 0.2 eth (2 max per wallet)
@@ -244,6 +248,24 @@ const MintSection = () => {
     }
   };
 
+  const getChunkedTokenIds = (chunkSize, tokenIds) => {
+    if (tokenIds.length === 0) return [];
+
+    const chunkedTokenIds = [];
+    for (let i = 0; i < tokenIds.length; i += chunkSize) {
+      const chunk = tokenIds.slice(i, i + chunkSize);
+      if (chunk.length === chunkSize) {
+        chunkedTokenIds.push(...chunk);
+      }
+    }
+    return chunkedTokenIds;
+  };
+
+  const getTokenIdsForMintConsumption = (chunkSize, tokenIds) => {
+    const chunkedTokenIds = getChunkedTokenIds(chunkSize, tokenIds);
+    return chunkedTokenIds.slice(0, Number(mintCount) * Number(chunkSize));
+  };
+
   const onMint = async () => {
     setIsTransactionModalOpen(true);
 
@@ -257,9 +279,11 @@ const MintSection = () => {
 
     if (isDay3) {
       /**
-        • - 1 or 2 LBL In Wallet:0.2 ETH mint. (1 max per wallet)
+        • - 1 LBL In Wallet:0.2 ETH mint. (1 max per wallet)
       */
-      tx.data = mintContract.methods.publicMintOneToOne(tokenIds).encodeABI();
+      tx.data = mintContract.methods
+        .publicMintOneToOne(tokenIds[0])
+        .encodeABI();
     } else if (isDay2) {
       /**
         • - Whitelist Mint: 0.15 ETH mint. (1 max per wallet)
@@ -268,15 +292,15 @@ const MintSection = () => {
     } else if (isDay1) {
       /**
         • - 5+ llamas @ 0.1 ETH per mint. Can mint according to how many multiples of 5.
-        • - 3 or 4 LBL = 0.15 ETH mint. (1 max per wallet)
+        • - 3 = 0.15 ETH mint. (1 max per wallet)
       */
-      if (numOfLazyLlamasOwned === 3 || numOfLazyLlamasOwned === 4) {
+      if (numOfLazyLlamasOwned >= 5) {
         tx.data = mintContract.methods
-          .publicMintThreeToOne(tokenIds)
+          .publicMintFiveToOne(getTokenIdsForMintConsumption(5, tokenIds))
           .encodeABI();
-      } else if (numOfLazyLlamasOwned >= 5) {
+      } else if (numOfLazyLlamasOwned >= 3 && numOfLazyLlamasOwned < 5) {
         tx.data = mintContract.methods
-          .publicMintFiveToOne(tokenIds)
+          .publicMintThreeToOne(getTokenIdsForMintConsumption(3, tokenIds))
           .encodeABI();
       }
     } else if (isPublicMint) {
@@ -293,9 +317,12 @@ const MintSection = () => {
         .once("transactionHash", () => {
           setTransactionStatus(TRANSACTION_STATUS.IN_PROGRESS);
         })
-        .once("confirmation", (_confirmationNumber, receipt) => {
+        .once("confirmation", async (_confirmationNumber, receipt) => {
           if (receipt && receipt.status === true) {
             setTransactionStatus(TRANSACTION_STATUS.SUCCESS);
+            if (isDay1) {
+              await getUnclaimedLazyLlamaNfts();
+            }
             refreshMinted();
           }
           setTimeout(() => {
