@@ -282,7 +282,7 @@ const MintSection = () => {
 
   const getTokenIdsForMintConsumption = (chunkSize, tokenIds) => {
     const chunkedTokenIds = getChunkedTokenIds(chunkSize, tokenIds);
-    console.log('chunkedTokenIds',chunkedTokenIds)
+    console.log("chunkedTokenIds", chunkedTokenIds);
     return chunkedTokenIds.slice(0, Number(mintCount) * Number(chunkSize));
   };
 
