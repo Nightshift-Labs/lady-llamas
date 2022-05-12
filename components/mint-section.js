@@ -130,6 +130,15 @@ const MintSection = () => {
 
     setPrice(minterFeesThreePlusOrWL);
 
+    //check the user has already minted
+    const threeToOne = await mintContract.methods.threeToOne(account).call();
+    console.log(threeToOne);
+
+    if (threeToOne) {
+      setEligible(false);
+      return;
+    }
+
     if (numOfLazyLlamasOwned >= 5) {
       const maxPerWallet = Math.floor(numOfLazyLlamasOwned / 5);
       setMaxPerWallet(maxPerWallet);
@@ -193,6 +202,16 @@ const MintSection = () => {
       .call();
 
     setPrice(minterFeesOnePlusDayThree.toString());
+
+    //check the user has already minted
+    const threeToOne = await mintContract.methods.threeToOne(account).call();
+    const oneToOne = await mintContract.methods.oneToOne(account).call();
+
+    console.log(threeToOne, oneToOne);
+    if (threeToOne || oneToOne) {
+      setEligible(false);
+      return;
+    }
 
     if (numOfLazyLlamasOwned >= 1) {
       setEligible(true);
@@ -263,6 +282,7 @@ const MintSection = () => {
 
   const getTokenIdsForMintConsumption = (chunkSize, tokenIds) => {
     const chunkedTokenIds = getChunkedTokenIds(chunkSize, tokenIds);
+    console.log('chunkedTokenIds',chunkedTokenIds)
     return chunkedTokenIds.slice(0, Number(mintCount) * Number(chunkSize));
   };
 
