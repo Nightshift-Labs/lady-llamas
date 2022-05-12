@@ -321,6 +321,7 @@ const MintSection = () => {
         .once("confirmation", async (_confirmationNumber, receipt) => {
           if (receipt && receipt.status === true) {
             setTransactionStatus(TRANSACTION_STATUS.SUCCESS);
+            
             if (isDay1) {
               const remainingUnclaimedLazyLlamaNfts =
                 await getUnclaimedLazyLlamaNfts();
@@ -330,6 +331,11 @@ const MintSection = () => {
                 setEligible(false);
               }
             }
+
+            if(isDay2){
+              setEligible(false);
+            }
+            
             refreshMinted();
           }
           setTimeout(() => {
