@@ -110,7 +110,6 @@ const MintSection = () => {
     setLazyLlamasNfts(unclaimedLazyLlamaNfts);
     setNumOfLazyLlamasOwned(numOfLazyLlamasOwned);
 
-    console.log(numOfLazyLlamasOwned, unclaimedLazyLlamaNfts);
     return numOfLazyLlamasOwned;
   };
 
@@ -321,21 +320,18 @@ const MintSection = () => {
         .once("confirmation", async (_confirmationNumber, receipt) => {
           if (receipt && receipt.status === true) {
             setTransactionStatus(TRANSACTION_STATUS.SUCCESS);
-            
+
             if (isDay1) {
               const remainingUnclaimedLazyLlamaNfts =
                 await getUnclaimedLazyLlamaNfts();
-              if (remainingUnclaimedLazyLlamaNfts >= 3) {
-                setEligible(true);
-              } else {
-                setEligible(false);
-              }
+
+              await setDay1State(remainingUnclaimedLazyLlamaNfts);
             }
 
-            if(isDay2){
+            if (isDay2) {
               setEligible(false);
             }
-            
+
             refreshMinted();
           }
           setTimeout(() => {
