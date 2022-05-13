@@ -27,6 +27,8 @@ export const getOwnerNfts = async (address) => {
       return ownedNfts.filter(
         (n) => n.contract.address === process.env.LAZY_LLAMA_CONTRACT_ADDRESS
       );
+    } else {
+      return [];
     }
   } else {
     return [];
