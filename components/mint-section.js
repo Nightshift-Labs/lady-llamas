@@ -626,12 +626,13 @@ const MintSection = () => {
                   </li>
                   <li className="text-lightPurple font-bold text-sm">
                     <a
-                      href=""
+                      href={`https://etherscan.io/address/${process.env.MINT_CONTRACT_ADDRESS}#code`}
                       title="Contract"
                       target="_blank"
                       rel="noopener noreferrer"
-                    />
-                    CONTRACT
+                    >
+                      CONTRACT
+                    </a>
                   </li>
                 </ul>
               </div>
