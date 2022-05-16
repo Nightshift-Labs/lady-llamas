@@ -8,16 +8,6 @@ const nftAPI = create({
 });
 
 export const getOwnerNfts = async (address) => {
-  // return [
-  //   {
-  //     id: {
-  //       tokenId: "187",
-  //     },
-  //     tokenUri: {
-  //       raw: "https://ipfs.io/ipfs/QmRz7wSrq2efD1bUBazffxX63bnCUsCLEAfrUpmJ2oWyfd/187",
-  //     },
-  //   },
-  // ];
 
   const response = await nftAPI.get(`?owner=${address}`);
   if (response.ok) {
