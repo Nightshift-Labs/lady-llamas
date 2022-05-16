@@ -28,7 +28,7 @@ const Navbar = () => {
             </li>
           </div>
           <div className="lg:hidden xl:hidden 2xl:hidden md:flex flex flex-row items-center space-x-3">
-            <li>
+            {/* <li>
               <a
                 href={process.env.OPENSEA_LINK}
                 title="View on OpenSea"
@@ -37,7 +37,7 @@ const Navbar = () => {
               >
                 <OpenSea />
               </a>
-            </li>
+            </li> */}
             <li>
               <a
                 href="https://twitter.com/LaidBackLlamas"
