@@ -40,7 +40,7 @@ const Navbar = () => {
             </li>
             <li>
               <a
-                href=""
+                href="https://twitter.com/LaidBackLlamas"
                 title="Follow Twitter"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -50,7 +50,7 @@ const Navbar = () => {
             </li>
             <li>
               <a
-                href=""
+                href="https://discord.com/invite/laidbackllamas"
                 title="Join Discord"
                 target="_blank"
                 rel="noopener noreferrer"
