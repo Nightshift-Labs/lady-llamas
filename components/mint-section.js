@@ -572,6 +572,13 @@ const MintSection = () => {
                   </>
                 )}
               </div>
+              <div className="mt-10 max-w-md">
+                <p className="text-xs leading-7 md:text-[11px] md:leading-5">
+                  *If you are eligible and mint on Day 1 you will not be
+                  eligible to mint more on Day 3. If you are on whitelist, you
+                  can mint 1 Lady Llama on day 2 no matter what.
+                </p>
+              </div>
             </div>
             <nav className="flex h-16 lg:hidden max-w-3xl pb-4">
               <div className="flex justify-between w-full">
