@@ -8,8 +8,9 @@ const nftAPI = create({
 });
 
 export const getOwnerNfts = async (address) => {
-
-  const response = await nftAPI.get(`?owner=${address}`);
+  const response = await nftAPI.get(
+    `?owner=${address}&contractAddresses[]=${process.env.LAZY_LLAMA_CONTRACT_ADDRESS}`
+  );
   if (response.ok) {
     const ownedNfts = response.data.ownedNfts;
 

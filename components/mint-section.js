@@ -107,6 +107,7 @@ const MintSection = () => {
     }
 
     const numOfLazyLlamasOwned = unclaimedLazyLlamaNfts.length;
+
     setLazyLlamasNfts(unclaimedLazyLlamaNfts);
     setNumOfLazyLlamasOwned(numOfLazyLlamasOwned);
 
@@ -588,7 +589,7 @@ const MintSection = () => {
                   </Link>
                 </div>
                 <ul className=" flex flex-row items-center space-x-8">
-                  {/* <li>
+                  <li>
                     <a
                       className="flex flex-row text-lightPurple font-bold text-sm"
                       href={process.env.OPENSEA_LINK}
@@ -599,7 +600,7 @@ const MintSection = () => {
                       <OpenSea />
                       OPENSEA
                     </a>
-                  </li> */}
+                  </li>
                   <li>
                     <a
                       className="flex flex-row text-lightPurple font-bold text-sm"
