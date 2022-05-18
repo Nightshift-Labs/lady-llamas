@@ -575,9 +575,9 @@ const MintSection = () => {
               </div>
               <div className="mt-10 max-w-md">
                 <p className="text-xs leading-7 md:text-[11px] md:leading-5">
-                  *If you are eligible and mint on Day 1 you will not be
-                  eligible to mint more on Day 3. If you are on whitelist, you
-                  can mint 1 Lady Llama on day 2 no matter what.
+                  *Due to an issue in the contract, we were unable to proceed
+                  with the whitelist mint. NOTE: Everyone on the whitelist who
+                  mints at 0.2 ETH price will be reimbursed 0.05 ETH.
                 </p>
               </div>
             </div>
